@@ -14,17 +14,8 @@ class UserController extends Controller
     {
         if (Auth::check())
             redirect()->route("panel")->send();
-        $title = 'Connexion';
+        $title = 'Connection';
         return view('user.login')->with(['title' => $title]);
-
-    }
-
-    public function profile()
-    {
-        $title = 'Accueil';
-
-
-        return view('home.home')->with(['title' => $title]);
 
     }
 
@@ -34,7 +25,7 @@ class UserController extends Controller
             return abort(404);
 
 
-        redirect()->route("home")->send();
+        redirect()->route("login")->send();
         return Auth::logout();
 
     }

@@ -8,7 +8,7 @@
             <div class="card-body login-card-body">
                 <p class="login-box-msg">Sign in to start your session</p>
 
-                <form action="{{ route('login') }}" data-ajax="true" method="POST">
+                <form action="{{ route('login_ajax') }}" data-ajax="true" data-redirect-url="{{ route('panel') }}" method="POST">
                     <div class="ajax-msg"></div>
                     <div class="input-group mb-3">
                         <input type="email" name="email" class="form-control" placeholder="Email">

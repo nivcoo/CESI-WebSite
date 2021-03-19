@@ -12,7 +12,7 @@ use Illuminate\Http\Response;
 use App\User;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Validator;
-
+use Illuminate\Support\Facades\Log;
 class AuthController extends Controller
 {
 
@@ -54,7 +54,6 @@ class AuthController extends Controller
             return response()->json(array(
                 'success' => true,
                 'data' => ["Connection successful ! Redirection..."]
-
             ));
         } else
 

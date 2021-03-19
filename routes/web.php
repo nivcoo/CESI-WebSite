@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\User\AuthController;
 use App\Http\Controllers\User\UserController;
+use App\Http\Controllers\Panel\PanelController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,13 +17,13 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-Route::get('/', [UserController::class, 'login'])->name('login_index');
+Route::get('/', [UserController::class, 'login'])->name('login');
 Route::group(['prefix' => 'user'], function () {
-    Route::match(['GET', 'POST'], '/login/process', [AuthController::class, 'login'])->name('login');
+    Route::match(['GET', 'POST'], '/login/process', [AuthController::class, 'login'])->name('login_ajax');
     Route::get('/logout', [UserController::class, 'logout'])->name('logout');
 });
 
 
 Route::group(['prefix' => 'panel'], function () {
-    Route::get('/', [UserController::class, 'login'])->name('panel');
+    Route::get('/', [PanelController::class, 'index'])->name('panel');
 });
