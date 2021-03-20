@@ -19,7 +19,6 @@ class Roles extends Migration
                 $table->increments('id');
                 $table->string('name');
                 $table->engine = 'InnoDB';
-                $table->timestamps();
             });
             DB::table('roles')->insert([
                     ['name' => 'Student'],
@@ -37,7 +36,6 @@ class Roles extends Migration
                 $table->increments('id');
                 $table->string('permission');
                 $table->engine = 'InnoDB';
-                $table->timestamps();
             });
             DB::table('permissions')->insert([
                     ['permission' => 'ACCESS_PANEL'],
