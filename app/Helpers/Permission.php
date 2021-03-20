@@ -14,7 +14,8 @@ class Permission
         if(self::isAdmin()) // admin
             return true;
         $user_permissions = unserialize($user->permissions);
-        $role = (new Roles())->where('id', $user->role_id)->first();
+        $roles = new Roles();
+        $role = $roles->where('id', $user->role_id)->first();
         $role_permissions = unserialize($role->permissions);
 
         if ((is_array($user_permissions) && in_array($permission, $user_permissions)) || (is_array($role_permissions) && in_array($permission, $role_permissions)))

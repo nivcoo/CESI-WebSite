@@ -19,11 +19,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [UserController::class, 'login'])->name('login');
 Route::group(['prefix' => 'user'], function () {
-    Route::match(['GET', 'POST'], '/login/process', [AuthController::class, 'login'])->name('login_ajax');
+    Route::post('/login/process', [AuthController::class, 'login'])->name('login_ajax');
     Route::get('/logout', [UserController::class, 'logout'])->name('logout');
 });
-
-
 Route::group(['prefix' => 'panel'], function () {
     Route::get('/', [PanelController::class, 'index'])->name('panel');
 });

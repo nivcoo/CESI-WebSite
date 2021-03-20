@@ -44,7 +44,8 @@ class AuthController extends Controller
         $password = htmlspecialchars($request->input('password'));
         $remember_me = htmlspecialchars($request->input('remember_me'));
 
-        $data = (new User())->where('email', $email)->first();
+        $user = new User();
+        $data = $user->where('email', $email)->first();
         if (!$data)
             return response()->json(array(
                 'success' => false,

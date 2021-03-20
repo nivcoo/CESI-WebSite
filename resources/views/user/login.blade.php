@@ -2,7 +2,7 @@
 @section('content')
     <div class="login-box">
         <div class="login-logo">
-            <a href="../../index2.html"><b>Cesi </b>Internship</a>
+            <a href="{{ route('login') }}"><b>Cesi </b>Internship</a>
         </div>
         <div class="card">
             <div class="card-body login-card-body">
