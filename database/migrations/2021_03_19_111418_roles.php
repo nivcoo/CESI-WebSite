@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class Ranks extends Migration
+class Roles extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class Ranks extends Migration
      */
     public function up()
     {
-        Schema::create('ranks', function (Blueprint $table) {
+        Schema::create('roles', function (Blueprint $table) {
 
             $table->increments('id');
             $table->string('name');
@@ -21,6 +21,14 @@ class Ranks extends Migration
             $table->engine = 'InnoDB';
             $table->timestamps();
         });
+        DB::table('roles')->insert([
+                ['name' => 'Student', 'permissions' => ''],
+                ['name' => 'Delegate', 'permissions' => ''],
+                ['name' => 'Pilote', 'permissions' => ''],
+                ['name' => 'Admin', 'permissions' => '']
+            ]
+        );
+
     }
 
     /**

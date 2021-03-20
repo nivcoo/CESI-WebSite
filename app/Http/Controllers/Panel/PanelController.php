@@ -12,8 +12,14 @@ class PanelController extends Controller
 {
     public function index()
     {
+
+        if (!\Permission::can("ACCESS_PANEL"))
+            redirect()->route("login")->send();
+
         $title = 'Panel';
-        return view('panel.index')->with(['title' => $title]);
+        $data = [];
+        $data['title'] = $title;
+        return view('panel.index')->with($data);
 
     }
 }

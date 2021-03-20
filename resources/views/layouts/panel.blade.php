@@ -147,12 +147,12 @@
                                     return false;
                                 }
 
-                                function showNav($nav, $context)
+                                function showNav($nav)
                                 {
                                     foreach ($nav as $name => $value) {
                                         if (!isset($value['menu']) && !isset($value['route']))
                                             continue;
-                                        if (!isset($value['menu']) && isset($value['permission']) && 1 == 0/**&& !$context->Permissions->can($value['permission'])**/)
+                                        if (!isset($value['menu']) && isset($value['permission']) && !\Permission::can($value['permission']))
                                             continue;
                                         $currentMenu = false;
                                         if (isset($value['menu'])) {
@@ -171,7 +171,7 @@
                                         echo '</a>';
                                         if (isset($value['menu'])) {
                                             echo '<ul class="nav nav-treeview">';
-                                            showNav($value['menu'], $context);
+                                            showNav($value['menu']);
                                             echo '</ul>';
                                         }
                                         echo '</li>';
@@ -179,7 +179,7 @@
                                 }
 
 
-                                showNav($admin_navbar, (object)$permissions);
+                                showNav($admin_navbar);
                                 ?>
                             </ul>
                         </nav>
