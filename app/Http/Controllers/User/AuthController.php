@@ -13,6 +13,7 @@ use App\User;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Log;
+use Permission;
 
 
 class AuthController extends Controller
@@ -52,12 +53,22 @@ class AuthController extends Controller
                 'data' => ["Email or password incorrect"]
 
             ));
+
+
+
         if (Hash::check($password, $data['password'])) {
-            Auth::login($data, $remember_me);
-            return response()->json(array(
-                'success' => true,
-                'data' => ["Connection successful ! Redirection..."]
-            ));
+            if(Permission::can("LOGIN", $data)) {
+                Auth::login($data, $remember_me);
+                return response()->json([
+                    'success' => true,
+                    'data' => ["Connection successful !"]
+                ]);
+            } else {
+                return response()->json([
+                    'success' => false,
+                    'data' => ["You do not have permission to log in with this account !"]
+                ]);
+            }
         } else
 
             return response()->json(array(

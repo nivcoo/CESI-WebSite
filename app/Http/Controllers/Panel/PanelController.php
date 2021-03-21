@@ -58,7 +58,10 @@ class PanelController extends Controller
                 list($permission, $rank) = explode('-', $permission);
                 $roles[$rank][$permission] = $checked;
             }
+            $connected_user = Auth::user();
             foreach ($roles as $roleID => $permissions) {
+                if($connected_user->id > $roleID)
+                    continue;
                 foreach ($permissions as $permissionID => $checked) {
                     if ($checked) {
                         PermissionsRoles::firstOrCreate(['role_id' => $roleID, 'permission_id' => $permissionID]);

@@ -27,7 +27,6 @@ class UserController extends Controller
         if (!Auth::check())
             return abort(404);
 
-
         redirect()->route("login")->send();
         return Auth::logout();
 

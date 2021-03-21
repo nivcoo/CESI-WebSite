@@ -9,13 +9,14 @@ use Illuminate\Support\Facades\Auth;
 class Permission
 {
 
-    public static function can($permission)
+    public static function can($permission, $user = false)
     {
-        if (!Auth::check())
+        if (!Auth::check() && !$user)
             return false;
-        $user = Auth::user();
+        if (!$user)
+            $user = Auth::user();
 
-        if (self::isAdmin()) // admin
+        if (self::isAdmin($user)) // admin
             return true;
         $permissions = new Permissions();
         $get_permission = $permissions->where('permission', $permission)->first();
@@ -48,11 +49,12 @@ class Permission
     }
 
 
-    public static function isAdmin()
+    public static function isAdmin($user = false)
     {
-        if (!Auth::check())
+        if (!Auth::check() && !$user)
             return false;
-        $user = Auth::user();
+        if (!$user)
+            $user = Auth::user();
         if ($user->role_id == 4) // admin
             return true;
 

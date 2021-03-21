@@ -39,6 +39,7 @@ class Roles extends Migration
                 $table->engine = 'InnoDB';
             });
             DB::table('permissions')->insert([
+                    ['permission' => 'LOGIN', "definition" => "Access to connect their account"],
                     ['permission' => 'ACCESS_PANEL', "definition" => "Access to the Panel"],
                     ['permission' => 'ACCESS_PERMISSIONS', "definition" => "Access to the Permissions page"],
                     ['permission' => 'USERS_SHOW_STUDENT', "definition" => "Show Students"],
