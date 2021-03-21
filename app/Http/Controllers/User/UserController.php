@@ -33,7 +33,7 @@ class UserController extends Controller
 
     }
 
-    public function panel_users(Request $request, $type = "student")
+    public function panel_users(Request $request, $type)
     {
         $user_model = new User();
         $get_users = [];
@@ -83,29 +83,31 @@ class UserController extends Controller
     public function panel_users_add(Request $request, $type = "student")
     {
         $can = self::has_permission($type);
-        if (!$can['show'])
+        if (!$can['add'])
             return abort("403");
         if ($request->ajax()) {
-            if (!$can['add'])
-                return abort("403");
+
         }
 
     }
 
 
-    public function panel_users_edit(Request $request, $type = "student", $id)
+    public function panel_users_edit(Request $request, $type, $id)
     {
         $can = self::has_permission($type);
-        if (!$can['show'])
+        if (!$can['edit'])
             return abort("403");
+
+        $user_model = new User();
+        $user = $user_model->where('id', $id)->first();
+
         if ($request->ajax()) {
-            if (!$can['edit'])
-                return abort("403");
+
         }
 
     }
 
-    public function panel_users_delete(Request $request, $type = "student", $id)
+    public function panel_users_delete(Request $request, $type, $id)
     {
         $can = self::has_permission($type);
         if (!$can['delete'])
