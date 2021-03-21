@@ -126,10 +126,10 @@
                                             ]
                                         ]
                                     ],
-                                    'Test' => [
+                                    'Permissions' => [
                                         'icon' => 'fas fa-tachometer-alt',
-                                        'permission' => 'MANAGE_UPDATE',
-                                        'route' => route("panel_users", ["admin"])
+                                        'permission' => 'ACCESS_PERMISSIONS',
+                                        'route' => route("panel_permissions")
                                     ]
                                 ];
 

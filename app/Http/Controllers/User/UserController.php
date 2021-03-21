@@ -121,7 +121,7 @@ class UserController extends Controller
     private function has_permission($type)
     {
 
-        $can["show"] = Permission::can("ACCESS_" . strtoupper($type));
+        $can["show"] = Permission::can("USERS_SHOW_" . strtoupper($type));
         $can["add"] = Permission::can("USERS_ADD_" . strtoupper($type));
         $can["edit"] = Permission::can("USERS_EDIT_" . strtoupper($type));
         $can["delete"] = Permission::can("USERS_DELETE_" . strtoupper($type));

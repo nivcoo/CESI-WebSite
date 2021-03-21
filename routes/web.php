@@ -24,6 +24,7 @@ Route::group(['prefix' => 'user'], function () {
 });
 Route::group(['prefix' => 'panel'], function () {
     Route::get('/', [PanelController::class, 'index'])->name('panel');
+    Route::match(["GET", "POST"], '/permissions', [PanelController::class, 'panel_permissions'])->name('panel_permissions');
     Route::match(["GET", "POST"], '/users/{type}', [UserController::class, 'panel_users'])->name('panel_users');
 
     Route::match(["GET", "POST"], '/users/{type}/add', [UserController::class, 'panel_users_add'])->name('panel_users_add');

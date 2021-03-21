@@ -35,14 +35,28 @@ class Roles extends Migration
 
                 $table->increments('id');
                 $table->string('permission');
+                $table->string('definition');
                 $table->engine = 'InnoDB';
             });
             DB::table('permissions')->insert([
-                    ['permission' => 'ACCESS_PANEL'],
-                    ['permission' => 'ACCESS_SHOW_STUDENT'],
-                    ['permission' => 'ACCESS_SHOW_DELEGATE'],
-                    ['permission' => 'ACCESS_SHOW_PILOTE'],
-                    ['permission' => 'ACCESS_SHOW_ADMIN']
+                    ['permission' => 'ACCESS_PANEL', "definition" => "Access to the Panel"],
+                    ['permission' => 'ACCESS_PERMISSIONS', "definition" => "Access to the Permissions page"],
+                    ['permission' => 'USERS_SHOW_STUDENT', "definition" => "Show Students"],
+                    ['permission' => 'USERS_ADD_STUDENT', "definition" => "Add a new Student"],
+                    ['permission' => 'USERS_EDIT_STUDENT', "definition" => "Edit a Student"],
+                    ['permission' => 'USERS_DELETE_STUDENT', "definition" => "Delete a Student"],
+                    ['permission' => 'USERS_SHOW_DELEGATE', "definition" => "Show Delegates"],
+                    ['permission' => 'USERS_ADD_DELEGATE', "definition" => "Add a new Delegates"],
+                    ['permission' => 'USERS_EDIT_DELEGATE', "definition" => "Edit a Delegates"],
+                    ['permission' => 'USERS_DELETE_DELEGATE', "definition" => "Delete a Delegates"],
+                    ['permission' => 'USERS_SHOW_PILOTE', "definition" => "Show Pilote"],
+                    ['permission' => 'USERS_ADD_PILOTE', "definition" => "Add a new Pilote"],
+                    ['permission' => 'USERS_EDIT_PILOTE', "definition" => "Edit a Pilote"],
+                    ['permission' => 'USERS_DELETE_PILOTE', "definition" => "Delete a Pilote"],
+                    ['permission' => 'USERS_SHOW_ADMIN', "definition" => "Show Admins"],
+                    ['permission' => 'USERS_ADD_ADMIN', "definition" => "Add a new Admin"],
+                    ['permission' => 'USERS_EDIT_ADMIN', "definition" => "Edit an Admin"],
+                    ['permission' => 'USERS_DELETE_ADMIN', "definition" => "Delete an Admin"]
                 ]
             );
         }
