@@ -76,8 +76,6 @@ class Roles extends Migration
                 ]
             );
         }
-
-
     }
 
     /**

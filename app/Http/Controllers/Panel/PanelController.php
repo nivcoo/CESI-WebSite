@@ -7,14 +7,15 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Routing\Redirector;
+use Permission;
 
 class PanelController extends Controller
 {
     public function index()
     {
 
-        /**if (!\Permission::can("ACCESS_PANEL"))
-            redirect()->route("login")->send();**/
+        if (!Permission::can("ACCESS_PANEL"))
+            redirect()->route("login")->send();
 
         $title = 'Panel';
         $data = [];

@@ -107,31 +107,32 @@
                                             'Student' => [
                                                 'icon' => 'far fa-circle nav-icon',
                                                 'permission' => 'ACCESS_SHOW_STUDENT',
-                                                'route' => 'login'
+                                                'route' => route("panel_users", ["student"])
                                             ],
                                             'Delegate' => [
                                                 'icon' => 'far fa-circle nav-icon',
                                                 'permission' => 'ACCESS_SHOW_DELEGATE',
-                                                'route' => 'login'
+                                                'route' => route("panel_users", ["delegate"])
                                             ],
                                             'Pilote' => [
                                                 'icon' => 'far fa-circle nav-icon',
                                                 'permission' => 'ACCESS_SHOW_PILOTE',
-                                                'route' => 'login'
+                                                'route' => route("panel_users", ["pilote"])
                                             ],
                                             'Admin' => [
                                                 'icon' => 'far fa-circle nav-icon',
                                                 'permission' => 'ACCESS_SHOW_ADMIN',
-                                                'route' => 'login'
+                                                'route' => route("panel_users", ["admin"])
                                             ]
                                         ]
                                     ],
                                     'Test' => [
                                         'icon' => 'fas fa-tachometer-alt',
                                         'permission' => 'MANAGE_UPDATE',
-                                        'route' => 'panel'
+                                        'route' => route("panel_users", ["admin"])
                                     ]
                                 ];
+
 
                                 function checkCurrent($nav)
                                 {
@@ -139,7 +140,7 @@
                                     foreach ($nav as $name => $value) {
                                         if (isset($value['menu']))
                                             return checkCurrent($value['menu']);
-                                        $route = (isset($value['route']) ? route($value['route']) : '#');
+                                        $route = (isset($value['route']) ? $value['route'] : '#');
                                         $current = $route == url()->current();
                                         if ($current == $route)
                                             return true;
@@ -160,7 +161,7 @@
                                             echo '<li class="nav-item has-treeview ' . ($currentMenu ? "menu-open" : "") . '">';
                                         } else
                                             echo '<li class="nav-item">';
-                                        $route = (isset($value['route']) ? route($value['route']) : '#');
+                                        $route = (isset($value['route']) ? $value['route'] : '#');
                                         $current = $route == url()->current();
                                         echo '<a class="nav-link' . ($current || $currentMenu ? " active" : "") . '" href="' . $route . '">';
                                         echo '<i class=" ' . $value['icon'] . ' nav-icon"></i>  <p>' . $name;
@@ -218,11 +219,20 @@
 </div>
 
 <script src="{{ asset('js/jquery/jquery-3.6.0.min.js') }}"></script>
+<script src="{{ asset('js/jquery/jquery.dataTables.min.js') }}"></script>
+<script src="{{ asset('js/boostrap/dataTables.bootstrap4.min.js') }}"></script>
+<script src="{{ asset('js/boostrap/bootstrap.min.js') }}"></script>
 <script src="{{ asset('js/boostrap/bootstrap.bundle.min.js') }}"></script>
 <script src="{{ asset('js/admin/adminlte.min.js') }}"></script>
 
 
 <script>
+    function confirmDel(url) {
+        if (confirm("Are you sure to delete that ?"))
+            window.location.href=''+url+'';
+        else
+            return false;
+    }
 
     const LOADING_MSG = "Loading";
     const ERROR_MSG = "Error";

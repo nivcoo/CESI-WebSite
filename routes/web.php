@@ -24,4 +24,11 @@ Route::group(['prefix' => 'user'], function () {
 });
 Route::group(['prefix' => 'panel'], function () {
     Route::get('/', [PanelController::class, 'index'])->name('panel');
+    Route::match(["GET", "POST"], '/users/{type}', [UserController::class, 'panel_users'])->name('panel_users');
+
+    Route::match(["GET", "POST"], '/users/{type}/add', [UserController::class, 'panel_users_add'])->name('panel_users_add');
+    Route::match(["GET", "POST"], '/users/{type}/edit/{id}', [UserController::class, 'panel_users_edit'])->name('panel_users_edit');
+    Route::get('/users/{type}/delete/{id}', [UserController::class, 'panel_users_delete'])->name('panel_users_delete');
 });
+
+
