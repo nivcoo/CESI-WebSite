@@ -60,7 +60,7 @@ class PanelController extends Controller
             }
             $connected_user = Auth::user();
             foreach ($roles as $roleID => $permissions) {
-                if($connected_user->id > $roleID)
+                if($connected_user->role_id < $roleID)
                     continue;
                 foreach ($permissions as $permissionID => $checked) {
                     if ($checked) {

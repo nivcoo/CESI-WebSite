@@ -106,22 +106,22 @@
                                         'menu' => [
                                             'Student' => [
                                                 'icon' => 'far fa-circle nav-icon',
-                                                'permission' => 'ACCESS_SHOW_STUDENT',
+                                                'permission' => 'USERS_SHOW_STUDENT',
                                                 'route' => route("panel_users", ["student"])
                                             ],
                                             'Delegate' => [
                                                 'icon' => 'far fa-circle nav-icon',
-                                                'permission' => 'ACCESS_SHOW_DELEGATE',
+                                                'permission' => 'USERS_SHOW_DELEGATE',
                                                 'route' => route("panel_users", ["delegate"])
                                             ],
                                             'Pilote' => [
                                                 'icon' => 'far fa-circle nav-icon',
-                                                'permission' => 'ACCESS_SHOW_PILOTE',
+                                                'permission' => 'USERS_SHOW_PILOTE',
                                                 'route' => route("panel_users", ["pilote"])
                                             ],
                                             'Admin' => [
                                                 'icon' => 'far fa-circle nav-icon',
-                                                'permission' => 'ACCESS_SHOW_ADMIN',
+                                                'permission' => 'USERS_SHOW_ADMIN',
                                                 'route' => route("panel_users", ["admin"])
                                             ]
                                         ]
