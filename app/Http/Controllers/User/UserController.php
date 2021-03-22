@@ -247,10 +247,6 @@ class UserController extends Controller
             } else {
                 $user->update(['first_name' => $first_name, 'last_name' => $last_name, 'birth_date' => $birth_date, 'center_id' => $center_id, 'promotion_id' => $promotion_id, 'updated_at' => Carbon::now()]);
             }
-
-            //Post::where('id',3)->update(['title'=>'Updated title']);
-
-
             return response()->json([
                 'success' => true,
                 'data' => ["User Edited !"]
