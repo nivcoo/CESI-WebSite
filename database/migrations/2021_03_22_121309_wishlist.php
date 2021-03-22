@@ -16,6 +16,8 @@ class Wishlist extends Migration
         if (!Schema::hasTable('wishlist')) {
             Schema::create('wishlist', function (Blueprint $table) {
 
+                $table->unsignedInteger('users_id');
+                $table->unsignedInteger('internship_offers_id');
                 $table->foreign('users_id')->references('id')->on('users');
                 $table->foreign('internship_offers_id')->references('id')->on('internship_offers');
                 $table->engine = 'InnoDB';

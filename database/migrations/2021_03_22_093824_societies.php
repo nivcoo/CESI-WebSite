@@ -20,7 +20,7 @@ class Societies extends Migration
                 $table->string('name', 50);
                 $table->string('activity_field', 50);
                 $table->string('address', 50);
-                $table->integer('postal_code', 5);
+                $table->integer('postal_code');
                 $table->string('city', 50);
                 $table->integer('cesi_interns')->nullable($value = true);
                 $table->integer('evaluation')->nullable($value = true);

@@ -13,16 +13,17 @@ class InternshipOffers extends Migration
      */
     public function up()
     {
-        if (!Schema::hasTable('intership_offers')) {
-            Schema::create('intership_offers', function (Blueprint $table) {
+        if (!Schema::hasTable('internship_offers')) {
+            Schema::create('internship_offers', function (Blueprint $table) {
 
-                $table->increments('id', 8);
+                $table->increments('id');
                 $table->boolean('archived');
                 $table->longText('content');
                 $table->date('offer_start');
                 $table->date('offer_end');
                 $table->date('end_date')->nullable($value = true);
                 $table->date('created');
+                $table->unsignedInteger('societies_id');
                 $table->foreign('societies_id')->references('id')->on('societies');
                 $table->engine = 'InnoDB';
                 $table->timestamps();
@@ -37,6 +38,6 @@ class InternshipOffers extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('intership_offers');
+        Schema::dropIfExists('internship_offers');
     }
 }
