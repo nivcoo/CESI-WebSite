@@ -112,8 +112,10 @@ class UserController extends Controller
         if (!$can['delete'])
             return abort("403");
         $user_model = new User();
+        if ($id == Auth::user()->id)
+            return redirect(route("panel_users", [$type]));
         $user_model->where('id', $id)->delete();
-        return redirect(route("panel_users", [$type]))->with('message', 'User deleted with Success !');;
+        return redirect(route("panel_users", [$type]))->with('message', 'User deleted with Success !');
     }
 
 
