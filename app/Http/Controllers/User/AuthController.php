@@ -80,65 +80,6 @@ class AuthController extends Controller
 
     }
 
-    public function register(Request $request)
-    {
-        if (!$request->isMethod('post'))
-            return abort(404);
-
-
-        $validator = Validator::make($request->all(), [
-            'first_name' => 'required|min:2|max:255',
-            'last_name' => 'required|min:2|max:255',
-            'email' => 'required|email|min:6|max:255|unique:users',
-            'username' => 'required|min:4|max:255|unique:users',
-            'password' => 'required|min:8|regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[#?!@$%^&*-_.]).*$/|same:password_confirm',
-            'password_confirm' => 'required'
-        ], [
-                'required' => "Veuillez remplir votre :attribute",
-                'email' => "Votre :attribute n'est pas dans le bon format",
-                'regex' => "Les mots de passe doivent contenir les catégories suivantes : majuscules, minuscules, chiffres et symboles (#?!@$%^&*-_.).",
-                'same' => "Votre :attribute n'est pas identique",
-                'min' => "Votre :attribute doit contenir au minimum :min caractères",
-                'max' => "Votre :attribute doit contenir au maximum :max caractères",
-                'unique' => "Un compte avec votre :attribute existe déjà",
-            ]
-        );
-
-        if ($validator->fails())
-            return response()->json(array(
-                'success' => false,
-                'data' => $validator->errors()->all()
-            ));
-        $recaptcha = htmlspecialchars($request->input('g-recaptcha-response'));
-        $ip = isset($_SERVER["HTTP_CF_CONNECTING_IP"]) ? htmlentities($_SERVER["HTTP_CF_CONNECTING_IP"]) : htmlentities($_SERVER["REMOTE_ADDR"]);
-        if(!$this->isValidReCaptcha($recaptcha, $ip, "6LctZLoUAAAAAB8zy8GDlF-rBraXYlCM4FDXoLHk"))
-            return response()->json(array(
-                'success' => false,
-                'data' => ["Captcha invalide !"]
-            ));
-        $first_name = htmlspecialchars($request->input('first_name'));
-        $last_name = htmlspecialchars($request->input('last_name'));
-        $email = htmlspecialchars($request->input('email'));
-        $username = htmlspecialchars($request->input('username'));
-        $password = htmlspecialchars($request->input('password'));
-
-        $password = Hash::make($password);
-
-        (new User())->insert(['first_name' => $first_name, 'last_name' => $last_name, 'email' => $email, 'username' => $username, 'password' => $password, 'created_at' => Carbon::now()]);
-
-        $data = (new User())->where('username', $username)->first();
-
-        Auth::login($data);
-
-        return response()->json(array(
-            'success' => true,
-            'data' => ["Inscription reussie ! Redirection..."]
-
-        ));
-
-
-    }
-
     public function isValidReCaptcha($code, $ip = null, $secret)
     {
         if (empty($code)) {

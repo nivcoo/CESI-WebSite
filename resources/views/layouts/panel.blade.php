@@ -223,13 +223,16 @@
 <script src="{{ asset('js/boostrap/dataTables.bootstrap4.min.js') }}"></script>
 <script src="{{ asset('js/boostrap/bootstrap.min.js') }}"></script>
 <script src="{{ asset('js/boostrap/bootstrap.bundle.min.js') }}"></script>
+<script src="{{ asset('js/moment/moment.min.js') }}"></script>
+<script src="{{ asset('js/boostrap/tempusdominus-bootstrap-4.min.js') }}"></script>
+<script src="{{ asset('js/daterangepicker/daterangepicker.js') }}"></script>
 <script src="{{ asset('js/admin/adminlte.min.js') }}"></script>
 
 
 <script>
     function confirmDel(url) {
         if (confirm("Are you sure to delete that ?"))
-            window.location.href=''+url+'';
+            window.location.href = '' + url + '';
         else
             return false;
     }
