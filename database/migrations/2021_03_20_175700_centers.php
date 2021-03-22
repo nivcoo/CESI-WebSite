@@ -15,7 +15,6 @@ class Centers extends Migration
     {
         if (!Schema::hasTable('centers')) {
             Schema::create('centers', function (Blueprint $table) {
-
                 $table->increments('id');
                 $table->string('city');
                 $table->integer('postal_code');
