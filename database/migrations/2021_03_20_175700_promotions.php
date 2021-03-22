@@ -21,9 +21,9 @@ class Promotions extends Migration
                 $table->engine = 'InnoDB';
             });
             DB::table('promotions')->insert([
-                ['promotion' => 'CPIA1', 'speciality' => "global"],
+                ['promotion' => 'CPIA1', 'speciality' => "generalist"],
                 ['promotion' => 'CPIA1', 'speciality' => "it"],
-                ['promotion' => 'CPIA2', 'speciality' => "global"],
+                ['promotion' => 'CPIA2', 'speciality' => "generalist"],
                 ['promotion' => 'CPIA2', 'speciality' => "it"]
 
             ]);
