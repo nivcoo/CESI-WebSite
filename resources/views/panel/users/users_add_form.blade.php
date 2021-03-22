@@ -28,7 +28,7 @@
                             </div>
                             <div class="form-group">
                                 <label>Role</label>
-                                <input disabled class="form-control" value="{{$role->name}}" type="text">
+                                <input disabled class="form-control" placeholder="{{$role->name}}" type="text">
                             </div>
 
                             <div class="form-group">

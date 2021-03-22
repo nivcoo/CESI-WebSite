@@ -9,12 +9,12 @@ use App\Models\Roles;
 use App\User;
 use Carbon\Carbon;
 use DataTables;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\View;
 use Permission;
 
 class UserController extends Controller
@@ -81,7 +81,7 @@ class UserController extends Controller
                 ->make(true);
         }
 
-        return view('panel.users_panel')->with(compact('title', 'get_users', 'can', 'type'));
+        return view('panel.users.users_panel')->with(compact('title', 'get_users', 'can', 'type'));
     }
 
 
@@ -122,7 +122,7 @@ class UserController extends Controller
             $centers = $centers_model->get();
             $promotions = $promotions_model->get();
 
-            return view('panel.users_add_form')->with(compact('title', 'type', 'role', 'centers', 'promotions'));
+            return view('panel.users.users_add_form')->with(compact('title', 'type', 'role', 'centers', 'promotions'));
         } else {
 
             $validator = Validator::make($request->all(), [
@@ -156,11 +156,11 @@ class UserController extends Controller
             (new User())->insert(['first_name' => $first_name, 'last_name' => $last_name, 'email' => $email, 'password' => $password, 'birth_date' => $birth_date, 'role_id' => $role_id, 'center_id' => $center_id, 'promotion_id' => $promotion_id, 'created_at' => Carbon::now()]);
 
 
-            return response()->json(array(
+            return response()->json([
                 'success' => true,
                 'data' => ["User added !"]
 
-            ));
+            ]);
 
         }
 
@@ -173,12 +173,89 @@ class UserController extends Controller
         if (!$can['edit'])
             return abort("403");
 
+        switch ($type) {
+            case "student":
+                $title = "Edit a Students";
+                break;
+            case "delegate":
+                $title = "Edit a Delegates";
+                break;
+            case "pilote":
+                $title = "Edit a Pilotes";
+                break;
+            case "admin":
+                $title = "Edit an Admins";
+                break;
+            default:
+                return abort("404");
+        }
+
         $user_model = new User();
         $user = $user_model->where('id', $id)->first();
+        if (!$user)
+            return redirect(route("panel_users", [$type]));
 
         if (!$request->ajax()) {
 
+            $centers_model = new Centers();
+            $promotions_model = new Promotions();
+            $roles_model = new Roles();
+
+            $role = $roles_model->where("id", $user->role_id)->first();
+
+            $centers = $centers_model->get();
+            $promotions = $promotions_model->get();
+
+            return view('panel.users.users_edit_form')->with(compact('title', 'type', 'role', 'centers', 'promotions', 'user', 'id'));
+
         } else {
+            $password = htmlspecialchars($request->input('password'));
+            $validator = Validator::make($request->all(), [
+                'first_name' => 'required|min:2|max:255',
+                'last_name' => 'required|min:2|max:255',
+                'birth_date' => 'required|date|date_format:Y-m-d',
+                'password' => 'required|min:8|regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[#?!@$%^&*-_.]).*$/',
+            ], [
+                    'regex' => "Passwords must contain the following categories: upper case, lower case, numbers and symbols (#?!@$%^&*-_.).",
+                ]
+            );
+
+            if(empty($password)) {
+                $validator = Validator::make($request->all(), [
+                    'first_name' => 'required|min:2|max:255',
+                    'last_name' => 'required|min:2|max:255',
+                    'birth_date' => 'required|date|date_format:Y-m-d'
+                ]);
+            }
+
+            if ($validator->fails())
+                return response()->json([
+                    'success' => false,
+                    'data' => $validator->errors()->all()
+                ]);
+
+            $first_name = htmlspecialchars($request->input('first_name'));
+            $last_name = htmlspecialchars($request->input('last_name'));
+            $birth_date = htmlspecialchars($request->input('birth_date'));
+            $center_id = htmlspecialchars($request->input('center_id'));
+            $promotion_id = htmlspecialchars($request->input('promotion_id'));
+
+
+            if(!empty($password)) {
+                $password = Hash::make($password);
+                $user->update(['first_name' => $first_name, 'last_name' => $last_name, 'password' => $password, 'birth_date' => $birth_date, 'center_id' => $center_id, 'promotion_id' => $promotion_id, 'updated_at' => Carbon::now()]);
+            } else {
+                $user->update(['first_name' => $first_name, 'last_name' => $last_name, 'birth_date' => $birth_date, 'center_id' => $center_id, 'promotion_id' => $promotion_id, 'updated_at' => Carbon::now()]);
+            }
+
+            //Post::where('id',3)->update(['title'=>'Updated title']);
+
+
+            return response()->json([
+                'success' => true,
+                'data' => ["User Edited !"]
+
+            ]);
 
         }
 
