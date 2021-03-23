@@ -20,11 +20,12 @@
                                 <tr>
                                     <th>No
                                         @if($can["add"])
-                                            <a class="btn btn-sm btn-success d-inline" href="{{ route("panel_users_add", [$type]) }}">Add</a>
+                                            <a class="btn btn-sm btn-success d-inline" href="{{ route("panel_societies_add") }}">Add</a>
                                         @endif</th>
-                                    <th>First name</th>
-                                    <th>Last name</th>
-                                    <th>Email</th>
+                                    <th>Name</th>
+                                    <th>Activity Field</th>
+                                    <th>Cesi Interns</th>
+                                    <th>Evaluation</th>
                                     <th>Actions</th>
                                 </tr>
                                 </thead>
@@ -53,9 +54,10 @@
 
                 columns: [
                     {data: 'DT_RowIndex', name: 'DT_RowIndex'},
-                    {data: 'first_name', name: 'first_name'},
-                    {data: 'last_name', name: 'last_name'},
-                    {data: 'email', name: 'email'},
+                    {data: 'name', name: 'name'},
+                    {data: 'activity_field', name: 'activity_field'},
+                    {data: 'cesi_interns', name: 'cesi_interns'},
+                    {data: 'evaluation', name: 'evaluation'},
                     {data: 'action', name: 'action', orderable: true, searchable: true},
                 ]
             });

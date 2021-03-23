@@ -11,6 +11,7 @@
     <meta property="og:description" content="CESI RALLYE">
     <meta name="author" content="Lilian, Nicolas, Alexis">
     <meta property="og:title" content="{{$title}} - {{$website_name}}">
+    <link rel="manifest" href="{{ asset('manifest/manifest.webmanifest') }}">
     <meta property="og:type" content="Site">
     <meta property="og:image" content="{{ asset('img/favicon.png') }}">
     <link rel="icon" type="image/png" href="{{ asset('img/favicon.png') }}"/>

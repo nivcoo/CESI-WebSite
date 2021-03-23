@@ -4,6 +4,8 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Models\Centers;
+use App\Models\Permissions;
+use App\Models\PermissionsUsers;
 use App\Models\Promotions;
 use App\Models\Roles;
 use App\User;
@@ -13,6 +15,7 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\View;
 use Permission;
@@ -110,19 +113,19 @@ class UserController extends Controller
             default:
                 return abort("404");
         }
-        $connected_user = Auth::user();
+        $roles_model = new Roles();
+        $permissions_model = new Permissions();
+        $role = $roles_model->where("id", $role_id)->first();
+        $permissions = $permissions_model->get();
         if (!$request->ajax()) {
 
             $centers_model = new Centers();
             $promotions_model = new Promotions();
-            $roles_model = new Roles();
-
-            $role = $roles_model->where("id", $role_id)->first();
 
             $centers = $centers_model->get();
             $promotions = $promotions_model->get();
 
-            return view('panel.users.users_add_form')->with(compact('title', 'type', 'role', 'centers', 'promotions'));
+            return view('panel.users.users_add_form')->with(compact('title', 'type', 'role', 'centers', 'promotions', 'permissions'));
         } else {
 
             $validator = Validator::make($request->all(), [
@@ -154,6 +157,21 @@ class UserController extends Controller
             $password = Hash::make($password);
 
             (new User())->insert(['first_name' => $first_name, 'last_name' => $last_name, 'email' => $email, 'password' => $password, 'birth_date' => $birth_date, 'role_id' => $role_id, 'center_id' => $center_id, 'promotion_id' => $promotion_id, 'created_at' => Carbon::now()]);
+            $user_id = (new User())->where('email', $email)->first()->id;
+
+            $permissions = [];
+            foreach ($request->all() as $permission => $checked) {
+                $input = explode('-', $permission);
+                if ($input[0] == "permission")
+                    $permissions[$input[1]] = $checked;
+            }
+
+            foreach ($permissions as $permissionID => $checked) {
+                if ($checked) {
+                    PermissionsUsers::firstOrCreate(['user_id' => $user_id, 'permission_id' => $permissionID]);
+                }
+
+            }
 
 
             return response()->json([
@@ -195,18 +213,27 @@ class UserController extends Controller
         if (!$user)
             return redirect(route("panel_users", [$type]));
 
+        $roles_model = new Roles();
+        $permissions_users_model = new PermissionsUsers();
+        $role = $roles_model->where("id", $user->role_id)->first();
+        $permissions_users = $permissions_users_model->where("user_id", $user->id)->get();
+
+        $permissions_model = new Permissions();
+        $permissions = $permissions_model->get();
+
         if (!$request->ajax()) {
 
             $centers_model = new Centers();
             $promotions_model = new Promotions();
-            $roles_model = new Roles();
-
-            $role = $roles_model->where("id", $user->role_id)->first();
 
             $centers = $centers_model->get();
             $promotions = $promotions_model->get();
+            $users_has_permissions = [];
+            foreach ($permissions_users as $permission_user) {
+                $users_has_permissions[$permission_user->permission_id] = true;
+            }
 
-            return view('panel.users.users_edit_form')->with(compact('title', 'type', 'role', 'centers', 'promotions', 'user', 'id'));
+            return view('panel.users.users_edit_form')->with(compact('title', 'type', 'role', 'centers', 'promotions', 'user', 'id', 'permissions', 'users_has_permissions'));
 
         } else {
             $password = htmlspecialchars($request->input('password'));
@@ -220,7 +247,7 @@ class UserController extends Controller
                 ]
             );
 
-            if(empty($password)) {
+            if (empty($password)) {
                 $validator = Validator::make($request->all(), [
                     'first_name' => 'required|min:2|max:255',
                     'last_name' => 'required|min:2|max:255',
@@ -241,12 +268,29 @@ class UserController extends Controller
             $promotion_id = htmlspecialchars($request->input('promotion_id'));
 
 
-            if(!empty($password)) {
+            if (!empty($password)) {
                 $password = Hash::make($password);
                 $user->update(['first_name' => $first_name, 'last_name' => $last_name, 'password' => $password, 'birth_date' => $birth_date, 'center_id' => $center_id, 'promotion_id' => $promotion_id, 'updated_at' => Carbon::now()]);
             } else {
                 $user->update(['first_name' => $first_name, 'last_name' => $last_name, 'birth_date' => $birth_date, 'center_id' => $center_id, 'promotion_id' => $promotion_id, 'updated_at' => Carbon::now()]);
             }
+
+            $permissions = [];
+            foreach ($request->all() as $permission => $checked) {
+                $input = explode('-', $permission);
+                if ($input[0] == "permission")
+                    $permissions[$input[1]] = $checked;
+            }
+
+            foreach ($permissions as $permissionID => $checked) {
+                if ($checked) {
+                    PermissionsUsers::firstOrCreate(['user_id' => $user->id, 'permission_id' => $permissionID]);
+                } else {
+                    $permissions_users_model->where(['user_id' => $user->id, 'permission_id' => $permissionID])->delete();
+                }
+            }
+
+
             return response()->json([
                 'success' => true,
                 'data' => ["User Edited !"]

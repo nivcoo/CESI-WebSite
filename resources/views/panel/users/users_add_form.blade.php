@@ -8,7 +8,8 @@
                         <h3 class="card-title">{{$title}}</h3>
                     </div>
                     <div class="card-body">
-                        <form action="{{ route('panel_users_add', [$type]) }}" data-redirect-url="{{ route('panel_users', [$type]) }}" data-ajax="true" method="POST">
+                        <form action="{{ route('panel_users_add', [$type]) }}"
+                              data-redirect-url="{{ route('panel_users', [$type]) }}" data-ajax="true" method="POST">
                             <div class="ajax-msg"></div>
                             <div class="form-group">
                                 <label>First Name</label>
@@ -28,7 +29,7 @@
                             </div>
                             <div class="form-group">
                                 <label>Role</label>
-                                <input disabled class="form-control" placeholder="{{$role->name}}" type="text">
+                                <input disabled class="form-control" value="{{$role->name}}" type="text">
                             </div>
 
                             <div class="form-group">
@@ -48,7 +49,8 @@
                                 <label>Center</label>
                                 <select class="form-control" name="center_id">
                                     @foreach($centers as $value)
-                                        <option value="{{$value->id}}">{{$value->address}}, {{$value->postal_code}} {{$value->city}}</option>
+                                        <option value="{{$value->id}}">{{$value->address}}
+                                            , {{$value->postal_code}} {{$value->city}}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -56,16 +58,43 @@
                                 <label>Promotion</label>
                                 <select class="form-control" name="promotion_id">
                                     @foreach($promotions as $value)
-                                        <option value="{{$value->id}}">{{$value->promotion}} - {{$value->speciality}}</option>
+                                        <option value="{{$value->id}}">{{$value->promotion}}
+                                            - {{$value->speciality}}</option>
                                     @endforeach
                                 </select>
                             </div>
+
+
+                            <table class="table table-responsive-sm table-bordered">
+                                <thead>
+                                <tr>
+                                    <th>Permission</th>
+
+                                    <th> {{ $role['name'] }}</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                @if (!empty($permissions))
+                                    @foreach ($permissions as $permission)
+                                        <tr>
+                                            <td>{{ $permission["definition"] }}</td>
+                                            <td>
+                                                <input type="checkbox"
+                                                       name="permission-{{ $permission['id'] }}" {{ $role['id'] == 4 ? "disabled checked='checked' " : "" }}>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                @endif
+
+                                </tbody>
+                            </table>
 
 
                             <div class="float-right">
                                 <a href="{{ route('panel_users', [$type]) }}" class="btn btn-default">Cancel</a>
                                 <button class="btn btn-primary" type="submit">Send</button>
                             </div>
+
 
                         </form>
 

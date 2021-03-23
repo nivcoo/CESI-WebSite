@@ -24,7 +24,6 @@ class Societies extends Migration
                 $table->string('city', 50);
                 $table->integer('cesi_interns')->nullable($value = true);
                 $table->integer('evaluation')->nullable($value = true);
-                $table->date('created');
                 $table->engine = 'InnoDB';
                 $table->timestamps();
             });

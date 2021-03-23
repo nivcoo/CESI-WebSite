@@ -10,39 +10,33 @@
                     <div class="card-body">
 
                         <form action="{{ route('panel_permissions') }}" data-ajax="true" method="POST">
-                            <table class="table table-bordered">
+                            <table class="table table-responsive-sm table-bordered">
                                 <thead>
                                 <tr>
                                     <th>Permission</th>
-                                    <?php
-                                    if (!empty($roles)) {
-                                        foreach ($roles as $role) {
-                                            echo '<th>' . $role['name'] . '</th>';
-                                        }
-                                    }
-                                    ?>
+                                    @if (!empty($roles))
+                                        @foreach ($roles as $role)
+                                            <th> {{ $role['name'] }}</th>
+                                        @endforeach
+                                    @endif
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <?php
-                                if (!empty($permissions)) { ?>
-                                <?php foreach ($permissions as $permission) { ?>
-
-
-                                <tr>
-                                    <td><?= $permission["definition"] ?></td>
-                                    <?php if(!empty($roles)) { ?>
-                                    <?php foreach ($roles as $role) { ?>
-                                    <td><input type="checkbox"
-                                               name="<?= $permission["id"] ?>-<?= $role['id'] ?>"<?= (isset($roles_has_permissions[$role['id']][$permission['id']]) && $roles_has_permissions[$role['id']][$permission['id']]) ? ' checked="checked"' : '' ?> <?= $role['id'] == 4 ? "disabled checked='checked' " : "" ?>>
-                                    </td>
-                                    <?php } ?>
-                                    <?php } ?>
-                                </tr>
-
-
-                                <?php } ?>
-                                <?php } ?>
+                                @if (!empty($permissions))
+                                    @foreach ($permissions as $permission)
+                                        <tr>
+                                            <td>{{ $permission["definition"] }}</td>
+                                            @if(!empty($roles))
+                                                @foreach ($roles as $role)
+                                                    <td>
+                                                        <input type="checkbox"
+                                                               name="{{ $permission["id"] }}-{{ $role['id'] }}" {{ (isset($roles_has_permissions[$role['id']][$permission['id']]) && $roles_has_permissions[$role['id']][$permission['id']]) ? ' checked="checked"' : '' }} {{ $role['id'] == 4 ? "disabled checked='checked' " : "" }}>
+                                                    </td>
+                                                @endforeach
+                                            @endif
+                                        </tr>
+                                    @endforeach
+                                @endif
 
                                 </tbody>
                             </table>

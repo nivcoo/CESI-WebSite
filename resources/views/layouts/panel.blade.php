@@ -15,6 +15,7 @@
     <meta property="og:type" content="Site">
     <meta property="og:image" content="{{ asset('img/favicon.png') }}">
     <link rel="icon" type="image/png" href="{{ asset('img/favicon.png') }}"/>
+    <link rel="manifest" href="{{ asset('manifest/manifest.webmanifest') }}">
 
     <link rel="stylesheet"
           href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&amp;display=fallback">
@@ -126,6 +127,42 @@
                                             ]
                                         ]
                                     ],
+
+                                    'Societies' => [
+                                        'icon' => 'fas fa-tachometer-alt',
+                                        'menu' => [
+                                            'Show Societies' => [
+                                                'icon' => 'far fa-circle nav-icon',
+                                                'permission' => 'SOCIETIES_SHOW_SOCIETIES',
+                                                'route' => route("panel_societies")
+                                            ],
+                                            'Internship Offer' => [
+                                                'icon' => 'far fa-circle nav-icon',
+                                                'permission' => 'PERSONAL_SHOW_OFFERS',
+                                                'route' => route("panel_users", ["pilote"])
+                                            ],
+                                            'Show Applications' => [
+                                                'icon' => 'far fa-circle nav-icon',
+                                                'permission' => 'SOCIETIES_SHOW_APPLICATIONS',
+                                                'route' => route("panel_users", ["pilote"])
+                                            ]
+                                        ]
+                                    ],
+                                    'Personal' => [
+                                        'icon' => 'fas fa-tachometer-alt',
+                                        'menu' => [
+                                            'Wishlist' => [
+                                                'icon' => 'far fa-circle nav-icon',
+                                                'permission' => 'PERSONAL_SHOW_WISHLIST',
+                                                'route' => route("panel_users", ["pilote"])
+                                            ],
+                                            'Notifications' => [
+                                                'icon' => 'far fa-circle nav-icon',
+                                                'permission' => 'PERSONAL_SHOW_NOTIFICATIONS',
+                                                'route' => route("panel_users", ["pilote"])
+                                            ]
+                                        ]
+                                    ],
                                     'Permissions' => [
                                         'icon' => 'fas fa-tachometer-alt',
                                         'permission' => 'ACCESS_PERMISSIONS',
@@ -229,7 +266,17 @@
 <script src="{{ asset('js/admin/adminlte.min.js') }}"></script>
 
 
+
 <script>
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('{{ asset('sw.js') }}', { scope: '/' }).then(function(reg) {
+            // registration worked
+            console.log('Registration succeeded. Scope is ' + reg.scope);
+        }).catch(function(error) {
+            // registration failed
+            console.log('Registration failed with ' + error);
+        });
+    };
     function confirmDel(url) {
         if (confirm("Are you sure to delete that ?"))
             window.location.href = '' + url + '';
