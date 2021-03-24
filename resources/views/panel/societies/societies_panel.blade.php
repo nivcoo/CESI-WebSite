@@ -24,6 +24,7 @@
                                         @endif</th>
                                     <th>Name</th>
                                     <th>Activity Field</th>
+                                    <th>Address</th>
                                     <th>Cesi Interns</th>
                                     <th>Evaluation</th>
                                     <th>Actions</th>
@@ -56,6 +57,7 @@
                     {data: 'DT_RowIndex', name: 'DT_RowIndex'},
                     {data: 'name', name: 'name'},
                     {data: 'activity_field', name: 'activity_field'},
+                    {data: 'address', name: 'address'},
                     {data: 'cesi_interns', name: 'cesi_interns'},
                     {data: 'evaluation', name: 'evaluation'},
                     {data: 'action', name: 'action', orderable: true, searchable: true},
