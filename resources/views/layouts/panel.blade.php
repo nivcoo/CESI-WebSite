@@ -139,7 +139,7 @@
                                             'Internship Offer' => [
                                                 'icon' => 'far fa-circle nav-icon',
                                                 'permission' => 'PERSONAL_SHOW_OFFERS',
-                                                'route' => route("panel_users", ["pilote"])
+                                                'route' => route("panel_offers")
                                             ],
                                             'Show Applications' => [
                                                 'icon' => 'far fa-circle nav-icon',

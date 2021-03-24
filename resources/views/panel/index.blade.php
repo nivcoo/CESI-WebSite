@@ -4,4 +4,5 @@
     <pre>
     {!! var_dump(\Permission::can("ACCESS_PANEL")) !!}
     </pre>
+
 @endsection

@@ -3,49 +3,68 @@
 namespace App\Http\Controllers\Panel;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Validator;
+use App\Models\InternshipOffers;
 use App\Models\Societies;
+use Carbon\Carbon;
+use DataTables;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\View;
-use Carbon\Carbon;
 use Permission;
-use DataTables;
 
-class SocietyController extends Controller
+class OfferController extends Controller
 {
-    public function panel_societies(Request $request)
+    public function panel_offers(Request $request)
     {
 
 
-        $title = 'Societies';
+        $title = 'Offers';
         $can = self::has_permission();
         if (!$can['show'])
             return abort("403");
-        $societies_model = new Societies();
-        $get_societies = $societies_model->get();
+        $offer_model = new InternshipOffers();
+        $get_offers = $offer_model->join('societies', 'societies.id', '=', 'internship_offers.societies_id')->where("archived", false)->where("end_date", ">", Carbon::now())->get();
 
         if ($request->ajax()) {
-            return Datatables::of($get_societies)
+            return Datatables::of($get_offers)
                 ->addIndexColumn()
                 ->addColumn('action', function ($row) use ($can) {
                     $btn = '';
                     if ($can["edit"])
-                        $btn = '<a href="' . route("panel_societies_edit", [$row['id']]) . '" class="btn btn-success btn-sm">Edit</a> ';
+                        $btn = '<a href="' . route("panel_offers_edit", [$row['id']]) . '" class="btn btn-success btn-sm">Edit</a> ';
                     if ($can["delete"])
-                        $btn .= '<a onClick="confirmDel(\'' . route("panel_societies_delete", [$row['id']]) . '\')" class="btn btn-danger btn-sm">Delete</button>';
+                        $btn .= '<a onClick="confirmDel(\'' . route("panel_offers_delete", [$row['id']]) . '\')" class="btn btn-danger btn-sm">Delete</button>';
                     return $btn;
                 })
-                ->addColumn('address', function ($row) {
-                    return $row['address'] . ', ' . $row['postal_code'] . ' ' . $row['city'];
+                ->addColumn('content', function ($row) {
+                    return '<button type="button" class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#exampleModal">
+                                Show content
+                            </button>
+                        
+                        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                          <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Society ' . $row["name"] . '</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                  <span aria-hidden="true">&times;</span>
+                                </button>
+                              </div>
+                              <div class="modal-body">
+                                ' . $row["content"] . '
+                              </div>
+                            </div>
+                          </div>
+                        </div>';
                 })
-                ->rawColumns(['action', 'address'])
+                ->rawColumns(['action', 'content'])
                 ->make(true);
         }
 
-        return view('panel.societies.societies_panel')->with(compact('title', 'get_societies', 'can'));
+        return view('panel.offers.offers_panel')->with(compact('title', 'get_offers', 'can'));
 
     }
 
@@ -155,13 +174,12 @@ class SocietyController extends Controller
     }
 
 
-
     private function has_permission()
     {
-        $can["show"] = Permission::can("SOCIETIES_SHOW_SOCIETIES");
-        $can["add"] = Permission::can("SOCIETIES_ADD_SOCIETIES");
-        $can["edit"] = Permission::can("SOCIETIES_EDIT_SOCIETIES");
-        $can["delete"] = Permission::can("SOCIETIES_DELETE_SOCIETIES");
+        $can["show"] = Permission::can("OFFERS_SHOW_SOCIETIES");
+        $can["add"] = Permission::can("OFFERS_ADD_SOCIETIES");
+        $can["edit"] = Permission::can("OFFERS_EDIT_SOCIETIES");
+        $can["delete"] = Permission::can("OFFERS_DELETE_SOCIETIES");
         return $can;
 
     }

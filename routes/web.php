@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Panel\PanelController;
 use App\Http\Controllers\Panel\SocietyController;
+use App\Http\Controllers\Panel\OfferController;
 use App\Http\Controllers\User\AuthController;
 use App\Http\Controllers\User\UserController;
 use Illuminate\Support\Facades\Route;
@@ -37,6 +38,13 @@ Route::group(['prefix' => 'panel'], function () {
         Route::match(["GET", "POST"], '/add', [SocietyController::class, 'panel_societies_add'])->name('panel_societies_add');
         Route::match(["GET", "POST"], '/edit/{id}', [SocietyController::class, 'panel_societies_edit'])->name('panel_societies_edit');
         Route::get('/delete/{id}', [SocietyController::class, 'panel_societies_delete'])->name('panel_societies_delete');
+    });
+
+    Route::group(['prefix' => 'offers'], function () {
+        Route::match(["GET", "POST"], '/', [OfferController::class, 'panel_offers'])->name('panel_offers');
+        Route::match(["GET", "POST"], '/add', [OfferController::class, 'panel_offers_add'])->name('panel_offers_add');
+        Route::match(["GET", "POST"], '/edit/{id}', [OfferController::class, 'panel_offers_edit'])->name('panel_offers_edit');
+        Route::get('/delete/{id}', [OfferController::class, 'panel_offers_delete'])->name('panel_offers_delete');
     });
 });
 

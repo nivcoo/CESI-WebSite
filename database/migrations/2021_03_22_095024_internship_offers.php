@@ -17,14 +17,14 @@ class InternshipOffers extends Migration
             Schema::create('internship_offers', function (Blueprint $table) {
 
                 $table->increments('id');
-                $table->boolean('archived');
+
                 $table->longText('content');
                 $table->date('offer_start');
                 $table->date('offer_end');
                 $table->date('end_date')->nullable($value = true);
-                $table->date('created');
                 $table->unsignedInteger('societies_id');
                 $table->foreign('societies_id')->references('id')->on('societies');
+                $table->boolean('archived');
                 $table->engine = 'InnoDB';
                 $table->timestamps();
             });

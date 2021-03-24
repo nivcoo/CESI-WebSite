@@ -50,14 +50,24 @@ class Roles extends Migration
                     ['permission' => 'USERS_ADD_DELEGATE', "definition" => "Add a new Delegates"],
                     ['permission' => 'USERS_EDIT_DELEGATE', "definition" => "Edit a Delegates"],
                     ['permission' => 'USERS_DELETE_DELEGATE', "definition" => "Delete a Delegates"],
-                    ['permission' => 'USERS_SHOW_PILOTE', "definition" => "Show Pilote"],
+                    ['permission' => 'USERS_SHOW_PILOTE', "definition" => "Show Pilotes"],
                     ['permission' => 'USERS_ADD_PILOTE', "definition" => "Add a new Pilote"],
                     ['permission' => 'USERS_EDIT_PILOTE', "definition" => "Edit a Pilote"],
                     ['permission' => 'USERS_DELETE_PILOTE', "definition" => "Delete a Pilote"],
                     ['permission' => 'USERS_SHOW_ADMIN', "definition" => "Show Admins"],
                     ['permission' => 'USERS_ADD_ADMIN', "definition" => "Add a new Admin"],
                     ['permission' => 'USERS_EDIT_ADMIN', "definition" => "Edit an Admin"],
-                    ['permission' => 'USERS_DELETE_ADMIN', "definition" => "Delete an Admin"]
+                    ['permission' => 'USERS_DELETE_ADMIN', "definition" => "Delete an Admin"],
+
+                    ['permission' => 'SOCIETIES_SHOW_SOCIETIES', "definition" => "Show Societies"],
+                    ['permission' => 'SOCIETIES_ADD_SOCIETIES', "definition" => "Add a Society"],
+                    ['permission' => 'SOCIETIES_EDIT_SOCIETIES', "definition" => "Edit a Society"],
+                    ['permission' => 'SOCIETIES_DELETE_SOCIETIES', "definition" => "Delete a Society"],
+
+                    ['permission' => 'OFFERS_SHOW_SOCIETIES', "definition" => "Show Offers"],
+                    ['permission' => 'OFFERS_ADD_SOCIETIES', "definition" => "Add an Offer"],
+                    ['permission' => 'OFFERS_EDIT_SOCIETIES', "definition" => "Edit an Offer"],
+                    ['permission' => 'OFFERS_DELETE_SOCIETIES', "definition" => "Delete an Offer"]
                 ]
             );
         }
