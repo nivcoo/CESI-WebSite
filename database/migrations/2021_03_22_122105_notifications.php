@@ -20,11 +20,10 @@ class Notifications extends Migration
                 $table->integer('type');
                 $table->string('content', 255);
                 $table->boolean('seen');
-                $table->date('created');
-                $table->unsignedInteger('users_id');
-                $table->unsignedInteger('applications_id');
-                $table->foreign('users_id')->references('id')->on('users');
-                $table->foreign('applications_id')->references('id')->on('applications');
+                $table->unsignedInteger('user_id');
+                $table->unsignedInteger('application_id');
+                $table->foreign('user_id')->references('id')->on('users');
+                $table->foreign('application_id')->references('id')->on('applications');
                 $table->engine = 'InnoDB';
                 $table->timestamps();
             });

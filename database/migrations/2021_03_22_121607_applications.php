@@ -18,14 +18,13 @@ class Applications extends Migration
 
                 $table->increments('id');
                 $table->integer('state');
-                $table->binary('cv');
-                $table->binary('cover_letter');
+                $table->binary('cv_path');
+                $table->binary('cover_letter_path');
                 $table->boolean('closed');
-                $table->date('created');
-                $table->unsignedInteger('internship_offers_id');
-                $table->unsignedInteger('users_id');
-                $table->foreign('internship_offers_id')->references('id')->on('internship_offers');
-                $table->foreign('users_id')->references('id')->on('users');
+                $table->unsignedInteger('internship_offer_id');
+                $table->unsignedInteger('user_id');
+                $table->foreign('internship_offer_id')->references('id')->on('internship_offers');
+                $table->foreign('user_id')->references('id')->on('users');
                 $table->engine = 'InnoDB';
                 $table->timestamps();
             });
