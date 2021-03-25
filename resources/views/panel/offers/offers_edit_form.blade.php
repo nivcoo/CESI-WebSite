@@ -23,7 +23,7 @@
                             </div>
                             <div class="form-group">
                                 <label>Content</label>
-                                <textarea name="content"> {{ $internship_offer->content }}</textarea>
+                                <textarea id="editor" name="content"> {{ $internship_offer->content }}</textarea>
                             </div>
                             <div class="form-group">
                                 <label>Start Date</label>

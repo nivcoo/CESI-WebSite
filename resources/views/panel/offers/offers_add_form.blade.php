@@ -22,7 +22,7 @@
                             </div>
                             <div class="form-group">
                                 <label>Content</label>
-                                <textarea name="content"></textarea>
+                                <textarea id="editor" name="content"></textarea>
                             </div>
                             <div class="form-group">
                                 <label>Start Date</label>
