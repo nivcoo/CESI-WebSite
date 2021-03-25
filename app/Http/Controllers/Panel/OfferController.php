@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Panel;
 use App\Http\Controllers\Controller;
 use App\Models\InternshipOffers;
 use App\Models\Societies;
+use App\Models\Wishlists;
 use Carbon\Carbon;
 use DataTables;
 use Illuminate\Http\Request;
@@ -33,12 +34,17 @@ class OfferController extends Controller
                 ->addIndexColumn()
                 ->addColumn('action', function ($row) use ($can) {
                     $btn = '';
+                    $wishlists_model = new Wishlists();
+                    $wishlist = $wishlists_model->where(['user_id' => Auth::user()->id, 'internship_offer_id' => $row['id']])->first();
+                    if ($can["wishlist_add"] && !$wishlist)
+                        $btn = '<a href="' . route("panel_personal_wishlist_add", [$row['id']]) . '" class="btn btn-info btn-sm">Add Wishlist</a> ';
                     if ($can["edit"])
-                        $btn = '<a href="' . route("panel_offers_edit", [$row['id']]) . '" class="btn btn-success btn-sm">Edit</a> ';
+                        $btn .= '<a href="' . route("panel_offers_edit", [$row['id']]) . '" class="btn btn-success btn-sm">Edit</a> ';
                     if ($can["delete"])
                         $btn .= '<a onClick="confirmDel(\'' . route("panel_offers_delete", [$row['id']]) . '\')" class="btn btn-danger btn-sm">Delete</button>';
                     return $btn;
                 })
+
                 ->addColumn('content', function ($row) {
                     return '<button type="button" class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#content-' . $row["id"] . '">
                                 Show content
@@ -159,7 +165,7 @@ class OfferController extends Controller
 
     }
 
-    public function panel_offers_delete(Request $request, $id)
+    public function panel_offers_delete($id)
     {
         $can = self::has_permission();
         if (!$can['delete'])
@@ -172,6 +178,7 @@ class OfferController extends Controller
 
     private function has_permission()
     {
+        $can["wishlist_add"] = Permission::can("PERSONAL_ADD_WISHLIST");
         $can["show"] = Permission::can("OFFERS_SHOW_SOCIETIES");
         $can["add"] = Permission::can("OFFERS_ADD_SOCIETIES");
         $can["edit"] = Permission::can("OFFERS_EDIT_SOCIETIES");

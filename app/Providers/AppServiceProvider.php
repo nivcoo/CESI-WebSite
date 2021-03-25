@@ -25,7 +25,7 @@ class AppServiceProvider extends ServiceProvider
     {
         view()->composer('*', function ($view) {
 
-            $view->with('website_name', config('app.name', 'Cesi Internship'));
+            $view->with('website_name', 'Cesi Internship');
 
         });
     }

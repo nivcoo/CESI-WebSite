@@ -67,7 +67,12 @@ class Roles extends Migration
                     ['permission' => 'OFFERS_SHOW_SOCIETIES', "definition" => "Show Offers"],
                     ['permission' => 'OFFERS_ADD_SOCIETIES', "definition" => "Add an Offer"],
                     ['permission' => 'OFFERS_EDIT_SOCIETIES', "definition" => "Edit an Offer"],
-                    ['permission' => 'OFFERS_DELETE_SOCIETIES', "definition" => "Delete an Offer"]
+                    ['permission' => 'OFFERS_DELETE_SOCIETIES', "definition" => "Delete an Offer"],
+
+                    ['permission' => 'PERSONAL_SHOW_WISHLIST', "definition" => "Show Wishlist"],
+                    ['permission' => 'PERSONAL_ADD_WISHLIST', "definition" => "Add into the Wishlist"],
+                    ['permission' => 'PERSONAL_DELETE_WISHLIST', "definition" => "Delete item in the Wishlist"],
+
                 ]
             );
         }

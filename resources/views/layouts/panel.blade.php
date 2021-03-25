@@ -165,7 +165,7 @@
                                             'Wishlist' => [
                                                 'icon' => 'far fa-circle nav-icon',
                                                 'permission' => 'PERSONAL_SHOW_WISHLIST',
-                                                'route' => route("panel_users", ["pilote"])
+                                                'route' => route("panel_personal_wishlist")
                                             ],
                                             'Notifications' => [
                                                 'icon' => 'far fa-circle nav-icon',
