@@ -27,6 +27,10 @@ class Societies extends Migration
                 $table->engine = 'InnoDB';
                 $table->timestamps();
             });
+            DB::table('societies')->insert([
+                    ['name' => 'Society 1', 'activity_field' => "IT", 'address' => "8 Rue des Frères Charles et Alcide d'Orbigny", "postal_code" => 64000, "city" => "Pau", "cesi_interns" => 8, "evaluation" => 15]
+                ]
+            );
         }
     }
 
