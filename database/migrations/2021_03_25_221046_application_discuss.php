@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class Applications extends Migration
+class ApplicationDiscuss extends Migration
 {
     /**
      * Run the migrations.
@@ -13,17 +13,14 @@ class Applications extends Migration
      */
     public function up()
     {
-        if (!Schema::hasTable('applications')) {
-            Schema::create('applications', function (Blueprint $table) {
-
+        if (!Schema::hasTable('application_discuss')) {
+            Schema::create('application_discuss', function (Blueprint $table) {
                 $table->increments('id');
-                $table->integer('state');
-                $table->string('cv_path');
-                $table->string('cover_letter_path');
-                $table->boolean('closed');
-                $table->unsignedInteger('internship_offer_id');
+                $table->unsignedInteger('application_id');
                 $table->unsignedInteger('user_id');
-                $table->foreign('internship_offer_id')->references('id')->on('internship_offers');
+                $table->string('file_path')->nullable();
+                $table->string('extra_content')->nullable();
+                $table->foreign('application_id')->references('id')->on('applications');
                 $table->foreign('user_id')->references('id')->on('users');
                 $table->engine = 'InnoDB';
                 $table->timestamps();
@@ -38,6 +35,6 @@ class Applications extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('applications');
+        Schema::dropIfExists('application_discuss');
     }
 }
