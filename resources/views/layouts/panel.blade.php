@@ -29,6 +29,17 @@
 
     <link rel="stylesheet" type="text/css" href="{{ asset('css/bootstrap/dataTables.bootstrap4.min.css') }}">
     <script src="{{ asset('js/jquery/jquery-3.6.0.min.js') }}"></script>
+    <script src="https://cdn.tiny.cloud/1/09g2ppghlxbmjn0ixpvk9va7ol0x3yl6zwgb64ugixt88pye/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+    <script>
+        tinymce.init({
+            selector: "textarea",
+            height: 300,
+            width: '100%',
+            language: 'en_US',
+            plugins: "textcolor code image link",
+            toolbar: "fontselect fontsizeselect bold italic underline strikethrough link image forecolor backcolor alignleft aligncenter alignright alignjustify cut copy paste bullist numlist outdent indent blockquote code"
+        });
+    </script>
 </head>
 <body class="sidebar-mini layout-fixed" style="height: auto;">
 <div class="wrapper">
@@ -264,6 +275,7 @@
 <script src="{{ asset('js/boostrap/tempusdominus-bootstrap-4.min.js') }}"></script>
 <script src="{{ asset('js/daterangepicker/daterangepicker.js') }}"></script>
 <script src="{{ asset('js/admin/adminlte.min.js') }}"></script>
+
 
 
 

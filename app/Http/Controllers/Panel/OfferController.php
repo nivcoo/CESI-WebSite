@@ -26,7 +26,7 @@ class OfferController extends Controller
         if (!$can['show'])
             return abort("403");
         $offer_model = new InternshipOffers();
-        $get_offers = $offer_model->join('societies', 'societies.id', '=', 'internship_offers.societies_id')->where("archived", false)->where("end_date", ">", Carbon::now())->get();
+        $get_offers = $offer_model->join('societies', 'societies.id', '=', 'internship_offers.society_id')->select('internship_offers.*', 'societies.name')->where("archived", false)->where("end_date", ">", Carbon::now())->get();
 
         if ($request->ajax()) {
             return Datatables::of($get_offers)
@@ -40,11 +40,11 @@ class OfferController extends Controller
                     return $btn;
                 })
                 ->addColumn('content', function ($row) {
-                    return '<button type="button" class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#exampleModal">
+                    return '<button type="button" class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#content-' . $row["id"] . '">
                                 Show content
                             </button>
                         
-                        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal fade" id="content-' . $row["id"] . '" tabindex="-1" role="dialog" aria-hidden="true">
                           <div class="modal-dialog" role="document">
                             <div class="modal-content">
                               <div class="modal-header">
@@ -68,24 +68,23 @@ class OfferController extends Controller
 
     }
 
-    public function panel_societies_add(Request $request)
+    public function panel_offers_add(Request $request)
     {
         $can = self::has_permission();
         if (!$can['add'])
             return abort("403");
         if (!$request->ajax()) {
-            $title = "Add a Society";
-            return view('panel.societies.societies_add_form')->with(compact('title'));
+            $title = "Add an Offer";
+            $societies_model = new Societies();
+            $get_societies = $societies_model->get();
+            return view('panel.offers.offers_add_form')->with(compact('title', 'get_societies'));
         } else {
 
             $validator = Validator::make($request->all(), [
-                'name' => 'required|min:2|max:255|unique:societies',
-                'activity_field' => 'required|min:2|max:255',
-                'address' => 'required|min:2|max:255',
-                'postal_code' => 'required|integer|max:99999',
-                'city' => 'required|max:255',
-                'cesi_interns' => 'required|integer',
-                'evaluation' => 'required|integer|max:20',
+                'content' => 'required',
+                'offer_start' => 'required|date|date_format:Y-m-d',
+                'offer_end' => 'required|date|date_format:Y-m-d',
+                'end_date' => 'required|date|date_format:Y-m-d'
             ]);
 
             if ($validator->fails())
@@ -95,19 +94,17 @@ class OfferController extends Controller
                 ]);
 
 
-            $name = htmlspecialchars($request->input('name'));
-            $activity_field = htmlspecialchars($request->input('activity_field'));
-            $address = htmlspecialchars($request->input('address'));
-            $postal_code = htmlspecialchars($request->input('postal_code'));
-            $city = htmlspecialchars($request->input('city'));
-            $cesi_interns = htmlspecialchars($request->input('cesi_interns'));
-            $evaluation = htmlspecialchars($request->input('evaluation'));
+            $society_id = htmlspecialchars($request->input('society_id'));
+            $content = $request->input('content');
+            $offer_start = htmlspecialchars($request->input('offer_start'));
+            $offer_end = htmlspecialchars($request->input('offer_end'));
+            $end_date = htmlspecialchars($request->input('end_date'));
 
-            (new Societies())->insert(['name' => $name, 'activity_field' => $activity_field, 'address' => $address, 'postal_code' => $postal_code, 'city' => $city, 'cesi_interns' => $cesi_interns, 'evaluation' => $evaluation, 'created_at' => Carbon::now()]);
+            (new InternshipOffers())->insert(['content' => $content, 'society_id' => $society_id, 'offer_start' => $offer_start, 'offer_end' => $offer_end, 'end_date' => $end_date, 'archived' => false, 'created_at' => Carbon::now()]);
 
             return response()->json([
                 'success' => true,
-                'data' => ["Society added !"]
+                'data' => ["Offer added !"]
 
             ]);
 
@@ -115,28 +112,28 @@ class OfferController extends Controller
 
     }
 
-    public function panel_societies_edit(Request $request, $id)
+    public function panel_offers_edit(Request $request, $id)
     {
         $can = self::has_permission();
         if (!$can['edit'])
             return abort("403");
 
-        $societies_model = new Societies();
-        $society = $societies_model->where('id', $id)->first();
-        if (!$society)
+        $internship_offers_model = new InternshipOffers();
+        $internship_offer = $internship_offers_model->where('id', $id)->first();
+        if (!$internship_offer)
             return redirect(route("panel_societies"));
         if (!$request->ajax()) {
-            $title = "Edit the Society " . $society->name;
-            return view('panel.societies.societies_edit_form')->with(compact('title', 'society', 'id'));
+            $title = "Edit the Offer " . $internship_offer->name;
+            $societies_model = new Societies();
+            $get_societies = $societies_model->get();
+            return view('panel.offers.offers_edit_form')->with(compact('title', 'get_societies', 'internship_offer', 'id'));
 
         } else {
             $validator = Validator::make($request->all(), [
-                'activity_field' => 'required|min:2|max:255',
-                'address' => 'required|min:2|max:255',
-                'postal_code' => 'required|integer|max:99999',
-                'city' => 'required|max:255',
-                'cesi_interns' => 'required|integer',
-                'evaluation' => 'required|integer|max:20',
+                'content' => 'required',
+                'offer_start' => 'required|date|date_format:Y-m-d',
+                'offer_end' => 'required|date|date_format:Y-m-d',
+                'end_date' => 'required|date|date_format:Y-m-d'
             ]);
 
             if ($validator->fails())
@@ -145,17 +142,16 @@ class OfferController extends Controller
                     'data' => $validator->errors()->all()
                 ]);
 
-            $activity_field = htmlspecialchars($request->input('activity_field'));
-            $address = htmlspecialchars($request->input('address'));
-            $postal_code = htmlspecialchars($request->input('postal_code'));
-            $city = htmlspecialchars($request->input('city'));
-            $cesi_interns = htmlspecialchars($request->input('cesi_interns'));
-            $evaluation = htmlspecialchars($request->input('evaluation'));
-            $society->update(['activity_field' => $activity_field, 'address' => $address, 'postal_code' => $postal_code, 'city' => $city, 'cesi_interns' => $cesi_interns, 'evaluation' => $evaluation, 'updated_at' => Carbon::now()]);
+            $society_id = htmlspecialchars($request->input('society_id'));
+            $content = $request->input('content');
+            $offer_start = htmlspecialchars($request->input('offer_start'));
+            $offer_end = htmlspecialchars($request->input('offer_end'));
+            $end_date = htmlspecialchars($request->input('end_date'));
+            $internship_offer->update(['content' => $content, 'society_id' => $society_id, 'offer_start' => $offer_start, 'offer_end' => $offer_end, 'end_date' => $end_date, 'archived' => false, 'updated_at' => Carbon::now()]);
 
             return response()->json([
                 'success' => true,
-                'data' => ["Society Edited !"]
+                'data' => ["Offer Edited !"]
 
             ]);
 
@@ -163,14 +159,14 @@ class OfferController extends Controller
 
     }
 
-    public function panel_societies_delete(Request $request, $id)
+    public function panel_offers_delete(Request $request, $id)
     {
         $can = self::has_permission();
         if (!$can['delete'])
             return abort("403");
-        $societies_model = new Societies();
-        $societies_model->where('id', $id)->delete();
-        return redirect(route("panel_societies"))->with('message', 'Society deleted with Success !');
+        $intership_offer_model = new InternshipOffers();
+        $intership_offer_model->where('id', $id)->delete();
+        return redirect(route("panel_offers"))->with('message', 'Offer deleted with Success !');
     }
 
 

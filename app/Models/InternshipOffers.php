@@ -8,4 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class InternshipOffers extends Model
 {
     use HasFactory;
+    protected $fillable = ['content', '	offer_start', 'offer_end', 'end_date', 'society_id'];
 }

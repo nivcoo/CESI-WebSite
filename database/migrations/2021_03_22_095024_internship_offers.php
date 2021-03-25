@@ -22,8 +22,8 @@ class InternshipOffers extends Migration
                 $table->date('offer_start');
                 $table->date('offer_end');
                 $table->date('end_date')->nullable($value = true);
-                $table->unsignedInteger('societies_id');
-                $table->foreign('societies_id')->references('id')->on('societies');
+                $table->unsignedInteger('society_id');
+                $table->foreign('society_id')->references('id')->on('societies');
                 $table->boolean('archived');
                 $table->engine = 'InnoDB';
                 $table->timestamps();
