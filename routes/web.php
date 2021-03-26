@@ -3,9 +3,10 @@
 use App\Http\Controllers\Panel\OfferController;
 use App\Http\Controllers\Panel\PanelController;
 use App\Http\Controllers\Panel\SocietyController;
+use App\Http\Controllers\Panel\ApplicationController;
 use App\Http\Controllers\User\AuthController;
-use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\User\PersonalController;
+use App\Http\Controllers\User\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -54,6 +55,16 @@ Route::group(['prefix' => 'panel'], function () {
             Route::get('/add/{id}', [PersonalController::class, 'panel_personal_wishlist_add'])->name('panel_personal_wishlist_add');
             Route::get('/delete/{user_id}/{internship_offer_id}', [PersonalController::class, 'panel_personal_wishlist_delete'])->name('panel_personal_wishlist_delete');
         });
+    });
+
+
+    Route::group(['prefix' => 'applications'], function () {
+        Route::match(["GET", "POST"], '/', [ApplicationController::class, 'panel_applications'])->name('panel_applications');
+        Route::match(["GET", "POST"], '/candidate/{id}', [ApplicationController::class, 'panel_applications_participate'])->name('panel_applications_participate');
+        Route::get('/show/{id}', [ApplicationController::class, 'panel_applications_show'])->name('panel_applications_show');
+
+        Route::get('/delete/{id}', [ApplicationController::class, 'panel_applications_delete'])->name('panel_applications_delete');
+
     });
 });
 

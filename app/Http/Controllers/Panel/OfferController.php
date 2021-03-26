@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Panel;
 use App\Http\Controllers\Controller;
 use App\Models\InternshipOffers;
 use App\Models\Societies;
+use App\Models\Applications;
 use App\Models\Wishlists;
 use Carbon\Carbon;
 use DataTables;
@@ -36,8 +37,12 @@ class OfferController extends Controller
                     $btn = '';
                     $wishlists_model = new Wishlists();
                     $wishlist = $wishlists_model->where(['user_id' => Auth::user()->id, 'internship_offer_id' => $row['id']])->first();
+                    $applications_model = new Applications();
+                    $application = $applications_model->where(['user_id' => Auth::user()->id, 'internship_offer_id' => $row['id']])->first();
+                    if ($can["participate"] && !$application)
+                        $btn = '<a href="' . route("panel_applications_participate", [$row['id']]) . '" class="btn btn-warning btn-sm">Participate</a> ';
                     if ($can["wishlist_add"] && !$wishlist)
-                        $btn = '<a href="' . route("panel_personal_wishlist_add", [$row['id']]) . '" class="btn btn-info btn-sm">Add Wishlist</a> ';
+                        $btn .= '<a href="' . route("panel_personal_wishlist_add", [$row['id']]) . '" class="btn btn-info btn-sm">Add Wishlist</a> ';
                     if ($can["edit"])
                         $btn .= '<a href="' . route("panel_offers_edit", [$row['id']]) . '" class="btn btn-success btn-sm">Edit</a> ';
                     if ($can["delete"])
@@ -178,6 +183,7 @@ class OfferController extends Controller
 
     private function has_permission()
     {
+        $can["participate"] = Permission::can("APPLICATIONS_PARTICIPATE");
         $can["wishlist_add"] = Permission::can("PERSONAL_ADD_WISHLIST");
         $can["show"] = Permission::can("OFFERS_SHOW_SOCIETIES");
         $can["add"] = Permission::can("OFFERS_ADD_SOCIETIES");

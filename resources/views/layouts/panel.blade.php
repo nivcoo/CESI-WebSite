@@ -15,7 +15,6 @@
     <meta property="og:type" content="Site">
     <meta property="og:image" content="{{ asset('img/favicon.png') }}">
     <link rel="icon" type="image/png" href="{{ asset('img/favicon.png') }}"/>
-    <link rel="manifest" href="{{ asset('manifest/manifest.webmanifest') }}">
     <link rel="manifest" href="{{ asset('manifest.json')}}">
 
     <link rel="stylesheet"
@@ -24,6 +23,7 @@
     <link rel="stylesheet" type="text/css"
           href="{{ asset('css/admin/tempusdominus-bootstrap-4/tempusdominus-bootstrap-4.min.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('css/admin/icheck-bootstrap/icheck-bootstrap.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/bootstrap/bootstrap.min.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('css/admin/adminlte.min.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('css/admin/overlayScrollbars/OverlayScrollbars.min.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('css/admin/daterangepicker/daterangepicker.css') }}">
@@ -150,13 +150,13 @@
                                             ],
                                             'Internship Offer' => [
                                                 'icon' => 'far fa-circle nav-icon',
-                                                'permission' => 'PERSONAL_SHOW_OFFERS',
+                                                'permission' => 'OFFERS_SHOW_SOCIETIES',
                                                 'route' => route("panel_offers")
                                             ],
                                             'Show Applications' => [
                                                 'icon' => 'far fa-circle nav-icon',
-                                                'permission' => 'SOCIETIES_SHOW_APPLICATIONS',
-                                                'route' => route("panel_users", ["pilote"])
+                                                'permission' => 'APPLICATIONS_SHOW',
+                                                'route' => route("panel_applications")
                                             ]
                                         ]
                                     ],
