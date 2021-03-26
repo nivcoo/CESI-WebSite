@@ -19,6 +19,7 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('css/fontawesome-5/css/all.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('css/admin/icheck-bootstrap/icheck-bootstrap.min.css') }}">
     <link href="{{ asset('css/admin/adminlte.min.css') }}" rel="stylesheet" type="text/css" >
+    <link rel="manifest" href="{{ asset('manifest.json')}}">
     <script src="{{ asset('js/jquery/jquery-3.6.0.min.js') }}"></script>
 </head>
 <body class="hold-transition login-page">
@@ -53,5 +54,12 @@
 </script>
 <script src="{{ asset('js/form.js') }}"></script>
 </body>
+<script>
+     window.addEventListener('load', function(){
+                navigator.serviceWorker.register('/service-worker.js').then(function(){
+                    console.log('ServiceWorker is load');
+                })
+            })
+</script>
 </html>
 

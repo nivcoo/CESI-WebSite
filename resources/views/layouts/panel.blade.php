@@ -16,6 +16,7 @@
     <meta property="og:image" content="{{ asset('img/favicon.png') }}">
     <link rel="icon" type="image/png" href="{{ asset('img/favicon.png') }}"/>
     <link rel="manifest" href="{{ asset('manifest/manifest.webmanifest') }}">
+    <link rel="manifest" href="{{ asset('manifest.json')}}">
 
     <link rel="stylesheet"
           href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&amp;display=fallback">
@@ -305,5 +306,12 @@
 </script>
 <script src="{{ asset('js/form.js') }}"></script>
 </body>
+<script>
+     window.addEventListener('load', function(){
+                navigator.serviceWorker.register('/service-worker.js').then(function(){
+                    console.log('ServiceWorker is load');
+                })
+            })
+</script>
 </html>
 
