@@ -72,6 +72,26 @@ class ApplicationController extends Controller
 
     }
 
+
+    public function panel_applications_show($id)
+    {
+
+
+
+        $can = self::has_permission();
+        if (!$can['show'])
+            return abort("403");
+        $application_model = new Applications();
+        $get_application = $application_model->join('internship_offers', 'internship_offers.id', '=', 'applications.internship_offer_id')->join('societies', 'societies.id', '=', 'internship_offers.society_id')->select('applications.*', 'internship_offers.content', 'societies.name')->where("applications.id", $id)->first();
+        if (!$get_application)
+            return abort("403");
+
+        $title = 'Application ' . $get_application->name;
+        return view('panel.applications.application_show')->with(compact('title', 'get_application', 'can', 'id'));
+
+
+    }
+
     public function panel_applications_participate(Request $request, $id)
     {
 
