@@ -138,6 +138,7 @@ class ApplicationController extends Controller
         $can["participate"] = Permission::can("APPLICATIONS_PARTICIPATE");
         $can["show"] = Permission::can("APPLICATIONS_SHOW");
         $can["delete"] = Permission::can("APPLICATIONS_DELETE");
+        $can["reply"] = Permission::can("APPLICATIONS_REPLY");
         return $can;
 
     }
