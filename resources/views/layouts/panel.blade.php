@@ -36,7 +36,7 @@
             selector: "textarea",
             height: 300,
             width: '100%',
-            language: 'en_US',
+            language: 'en',
             plugins: "textcolor code image link",
             toolbar: "fontselect fontsizeselect bold italic underline strikethrough link image forecolor backcolor alignleft aligncenter alignright alignjustify cut copy paste bullist numlist outdent indent blockquote code"
         });
