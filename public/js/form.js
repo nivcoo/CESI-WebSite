@@ -55,7 +55,7 @@ function initForms() {
                 console.log('Type :', form.find('input[name="'+input_name+'"]').attr('type')+"\n");
                 console.log('Value :', form.find('input[name="'+input_name+'"]').val()+"\n\n")*/
 
-                if (form.find('input[name="' + input_name + '"]').attr('type') == "text" || form.find('input[name="' + input_name + '"]').attr('type') == "hidden" || form.find('input[name="' + input_name + '"]').attr('type') == "email" || form.find('input[name="' + input_name + '"]').attr('type') == "password"|| form.find('input[name="' + input_name + '"]').attr('type') == "number") {
+                if (form.find('input[name="' + input_name + '"]').attr('type') == "text" || form.find('input[name="' + input_name + '"]').attr('type') == "hidden" || form.find('input[name="' + input_name + '"]').attr('type') == "email" || form.find('input[name="' + input_name + '"]').attr('type') == "password" || form.find('input[name="' + input_name + '"]').attr('type') == "number") {
                     inputs[input_name] = form.find('input[name="' + input_name + '"]').val(); // je récup la valeur comme ça pour éviter la sérialization
                 } else if (form.find('input[name="' + input_name + '"]').attr('type') == "radio") {
                     inputs[input_name] = form.find('input[name="' + input_name + '"][type="radio"]:checked').val();
@@ -162,7 +162,7 @@ function initForms() {
 
                     let error = "<ul>";
                     for (const value of json.data) {
-                        error += "<li>"+  value + "</li>";
+                        error += "<li>" + value + "</li>";
                     }
                     error += "</ul>";
 
