@@ -76,8 +76,9 @@
 
             @foreach($get_discussions as $v)
 
-                <div class="col-md-12">
-                    <div class="card">
+
+                <div class="col-md-8 @if($connected_user->id != $v->user_id) offset-md-4 @endif">
+                    <div class="card @if($connected_user->id == $v->user_id) card-info @else card-danger @endif">
                         <div class="card-header with-border">
                             <h3 class="card-title">Comment by {{$v->first_name}} {{$v->last_name}}</h3>
                         </div>

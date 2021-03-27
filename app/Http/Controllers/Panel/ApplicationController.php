@@ -95,7 +95,7 @@ class ApplicationController extends Controller
 
         $id = $request->input('id');
         $application_model = new Applications();
-        $get_application = $application_model->where("id", $id)->first();
+        $get_application = $application_model->join('internship_offers', 'internship_offers.id', '=', 'applications.internship_offer_id')->join('societies', 'societies.id', '=', 'internship_offers.society_id')->select('applications.*', 'societies.name')->where("applications.id", $id)->first();
         if (!$get_application)
             return response()->json([
                 'success' => false,
@@ -138,10 +138,10 @@ class ApplicationController extends Controller
 
         $title = 'Application ' . $get_application->name;
 
-
+        $connected_user = Auth::user();
         $application_discussions_model = new ApplicationDiscussions();
         $get_discussions = $application_discussions_model->join('users', 'users.id', '=', 'application_discussions.application_id')->where("application_id", $get_application->id)->select('application_discussions.*', 'users.first_name', 'users.last_name')->get();
-        return view('panel.applications.application_show')->with(compact('title', 'get_application', 'can', 'get_discussions', 'id'));
+        return view('panel.applications.application_show')->with(compact('title', 'get_application', 'can', 'get_discussions', 'connected_user', 'id'));
 
 
     }
@@ -215,7 +215,7 @@ class ApplicationController extends Controller
         $applications_model = new Applications();
         $id = $request->input("id");
         $state = $request->input("state");
-        $get_application = $applications_model->where('id', $id)->first();
+        $get_application = $applications_model->join('internship_offers', 'internship_offers.id', '=', 'applications.internship_offer_id')->join('societies', 'societies.id', '=', 'internship_offers.society_id')->select('applications.*', 'societies.name')->where('applications.id', $id)->first();
         if (!$get_application)
             return response()->json([
                 'success' => false,
