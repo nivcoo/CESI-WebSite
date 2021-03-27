@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Models\Applications;
 use App\Models\InternshipOffers;
+use App\Models\Wishlists;
 use App\User;
 use Carbon\Carbon;
 use DataTables;
@@ -12,12 +14,12 @@ use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\View;
 use Permission;
-use App\Models\Wishlists;
 
 class PersonalController extends Controller
 {
 
-    public function panel_personal_wishlist(Request $request) {
+    public function panel_personal_wishlist(Request $request)
+    {
 
         $title = 'Wishlist';
         $can = self::has_permission();
@@ -31,11 +33,14 @@ class PersonalController extends Controller
                 ->addIndexColumn()
                 ->addColumn('action', function ($row) use ($can) {
                     $btn = '';
+                    $applications_model = new Applications();
+                    $application = $applications_model->where(['user_id' => Auth::user()->id, 'internship_offer_id' => $row['id']])->first();
+                    if ($can["participate"] && !$application)
+                        $btn = '<a href="' . route("panel_applications_participate", [$row['id']]) . '" class="btn btn-warning btn-sm">Participate</a> ';
                     if ($can["wishlist_delete"])
                         $btn .= '<a onClick="confirmDel(\'' . route("panel_personal_wishlist_delete", [$row['user_id'], $row['internship_offer_id']]) . '\')" class="btn btn-danger btn-sm">Delete</button>';
                     return $btn;
                 })
-
                 ->addColumn('content', function ($row) {
                     return '<button type="button" class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#content-' . $row["internship_offer_id"] . '">
                                 Show content

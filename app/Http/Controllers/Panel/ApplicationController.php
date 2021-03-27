@@ -75,9 +75,6 @@ class ApplicationController extends Controller
 
     public function panel_applications_show($id)
     {
-
-
-
         $can = self::has_permission();
         if (!$can['show'])
             return abort("403");

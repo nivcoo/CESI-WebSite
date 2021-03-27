@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Panel;
 
 use App\Http\Controllers\Controller;
+use App\Models\Applications;
 use App\Models\InternshipOffers;
 use App\Models\Societies;
-use App\Models\Applications;
 use App\Models\Wishlists;
 use Carbon\Carbon;
 use DataTables;
@@ -49,7 +49,6 @@ class OfferController extends Controller
                         $btn .= '<a onClick="confirmDel(\'' . route("panel_offers_delete", [$row['id']]) . '\')" class="btn btn-danger btn-sm">Delete</button>';
                     return $btn;
                 })
-
                 ->addColumn('content', function ($row) {
                     return '<button type="button" class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#content-' . $row["id"] . '">
                                 Show content
