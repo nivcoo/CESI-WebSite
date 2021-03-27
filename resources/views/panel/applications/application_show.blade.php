@@ -33,7 +33,7 @@
 
                                     <select class="form-control" name="state">
                                         <option value="1"><b>State 1 : </b>Discussion between pilot and student</option>
-                                        <option value="3"><b>State 2 : </b>An internship validation form has been issued
+                                        <option value="2"><b>State 2 : </b>An internship validation form has been issued
                                             by
                                             the company
                                         </option>
@@ -74,31 +74,37 @@
 
             <hr>
 
-            <div class="col-md-12">
-                <div class="card">
-                    <div class="card-header with-border">
-                        <h3 class="card-title">Comment by Nicolas</h3>
-                    </div>
-                    <div class="card-body">
-                        @if(!empty($get_application->content))
-                            <div class="form-group">
-                                <label>Content</label>
-                                <div class="jumbotron">
-                                    {!! $get_application->content !!}
-                                </div>
-                            </div>
-                        @endif
-                        @if(!empty($get_application->cv_path))
-                            <div class="form-group">
-                                <label>Extra File</label><br>
+            @foreach($get_discussions as $v)
 
-                                <a class="btn btn-sm btn-secondary" target="_blank"
-                                   href="{{asset('storage/'.$get_application->cv_path)}}"> Test</a>
-                            </div>
-                        @endif
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header with-border">
+                            <h3 class="card-title">Comment by {{$v->first_name}} {{$v->last_name}}</h3>
+                        </div>
+                        <div class="card-body">
+                            @if(!empty($v->content))
+                                <div class="form-group">
+                                    <label>Content</label>
+                                    <div class="jumbotron">
+                                        {!! $v->content !!}
+                                    </div>
+                                </div>
+                            @endif
+                            @if(!empty($v->file_path))
+                                <div class="form-group">
+                                    <label>Extra File</label><br>
+
+                                    <a class="btn btn-sm btn-secondary" target="_blank"
+                                       href="{{asset('storage/'.$v->file_path)}}"> Test</a>
+                                </div>
+                            @endif
+                        </div>
+                        <div class="card-footer">
+                            {{$v->created_at}}
+                        </div>
                     </div>
                 </div>
-            </div>
+            @endforeach
         </div>
     </section>
 @endsection

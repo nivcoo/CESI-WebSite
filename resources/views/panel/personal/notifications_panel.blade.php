@@ -21,7 +21,7 @@
                                     <th>No</th>
                                     <th>Type</th>
                                     <th>Society Name</th>
-                                    <th>Content</th>
+                                    <th style="width: 300px;">Content</th>
                                     <th>Actions</th>
                                 </tr>
                                 </thead>

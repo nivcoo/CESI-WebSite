@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Panel;
 
 use App\Http\Controllers\Controller;
 use App\Models\Applications;
+use App\Models\ApplicationDiscussions;
 use App\Models\InternshipOffers;
 use App\Models\Wishlists;
 use App\Models\Notifications;
@@ -85,7 +86,11 @@ class ApplicationController extends Controller
             return abort("403");
 
         $title = 'Application ' . $get_application->name;
-        return view('panel.applications.application_show')->with(compact('title', 'get_application', 'can', 'id'));
+
+
+        $application_discussions_model = new ApplicationDiscussions();
+        $get_discussions = $application_discussions_model->join('users', 'users.id', '=', 'application_discussions.application_id')->where("application_id", $get_application->id)->select('application_discussions.*', 'users.first_name', 'users.last_name')->get();
+        return view('panel.applications.application_show')->with(compact('title', 'get_application', 'can', 'get_discussions', 'id'));
 
 
     }
@@ -171,16 +176,27 @@ class ApplicationController extends Controller
                 'success' => true,
                 'data' => ["The state is already to " . $state]
             ]);**/
+        $message = "";
 
         switch ($state) {
             case 1:
-                self::notify("application", "You are now at step 1 on your $get_application->name business application. You can chat with the company !", $get_application->user_id, $get_application->id);
+                $message = "You are now at step 1 on your $get_application->name business application. You can chat with the company !";
                 break;
             case 2:
+                $message = "You are now at step 2 on your $get_application->name business application. An internship validation form has been issued by the company";
                 break;
             case 3:
+                $message = "You are now at step 3 on your $get_application->name business application. An internship validation form has been signed by the pilot";
+                break;
+            case 4:
+                $message = "You are now at step 4 on your $get_application->name business application. The internship agreements have been issued to the company that an internship validation form has been signed by the pilot";
+                break;
+            case 5:
+                $message = "You are now at step 5 on your $get_application->name business application. The internship agreements have been returned signed by the company";
                 break;
         }
+
+        self::notify("application", $message, $get_application->user_id, $get_application->id);
         $get_application->update(['state' => $state]);
         return response()->json([
             'success' => true,

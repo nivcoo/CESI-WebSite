@@ -23,6 +23,7 @@
                                            href="{{ route("panel_offers") }}">Add</a>
                                     </th>
                                     <th>Society Name</th>
+                                    <th>State</th>
                                     <th>Content</th>
                                     <th>Actions</th>
                                 </tr>
@@ -53,6 +54,7 @@
                 columns: [
                     {data: 'DT_RowIndex', name: 'DT_RowIndex'},
                     {data: 'name', name: 'name'},
+                    {data: 'state', name: 'state'},
                     {data: 'content', name: 'content', orderable: true, searchable: true},
                     {data: 'action', name: 'action', orderable: true, searchable: true},
                 ]

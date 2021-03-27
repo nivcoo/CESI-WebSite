@@ -28,7 +28,7 @@ class PersonalController extends Controller
 
         $connected_user = Auth::user();
         $notifications_model = new Notifications();
-        $get_notifications = $notifications_model->join('applications', 'applications.id', '=', 'notifications.application_id')->join('internship_offers', 'internship_offers.id', '=', 'applications.internship_offer_id')->join('societies', 'societies.id', '=', 'internship_offers.society_id')->select(["notifications.*", "societies.name"])->where("notifications.user_id", $connected_user->id)->where("notifications.seen", false)->get();
+        $get_notifications = $notifications_model->join('applications', 'applications.id', '=', 'notifications.application_id')->join('internship_offers', 'internship_offers.id', '=', 'applications.internship_offer_id')->join('societies', 'societies.id', '=', 'internship_offers.society_id')->select(["notifications.*", "societies.name"])->where("notifications.user_id", $connected_user->id)->where("notifications.seen", false)->orderBy('created_at', 'DESC')->get();
 
         if ($request->ajax()) {
             return Datatables::of($get_notifications)
