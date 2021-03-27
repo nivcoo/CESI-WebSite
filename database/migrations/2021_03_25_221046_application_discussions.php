@@ -18,6 +18,7 @@ class ApplicationDiscussions extends Migration
                 $table->increments('id');
                 $table->unsignedInteger('application_id');
                 $table->unsignedInteger('user_id');
+                $table->string('file_name')->nullable();
                 $table->string('file_path')->nullable();
                 $table->string('content')->nullable();
                 $table->foreign('application_id')->references('id')->on('applications');

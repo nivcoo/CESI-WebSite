@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\Panel;
 
 use App\Http\Controllers\Controller;
-use App\Models\Applications;
 use App\Models\ApplicationDiscussions;
+use App\Models\Applications;
 use App\Models\InternshipOffers;
-use App\Models\Wishlists;
 use App\Models\Notifications;
+use App\Models\Wishlists;
 use Carbon\Carbon;
 use DataTables;
 use Illuminate\Http\Request;
@@ -71,6 +71,54 @@ class ApplicationController extends Controller
 
         return view('panel.applications.application_panel')->with(compact('title', 'get_applications', 'can'));
 
+
+    }
+
+    public function panel_applications_reply(Request $request)
+    {
+        $can = self::has_permission();
+        if (!$can['reply'])
+            return abort("403");
+        if (!$request->ajax())
+            return abort("404");
+        $validator = Validator::make($request->all(), [
+            'content' => 'required_without:file',
+            'file' => 'required_without:content|max:2048',
+            'file_name' => 'required_with:file|max:255',
+        ]);
+
+        if ($validator->fails())
+            return response()->json([
+                'success' => false,
+                'data' => $validator->errors()->all()
+            ]);
+
+        $id = $request->input('id');
+        $application_model = new Applications();
+        $get_application = $application_model->where("id", $id)->first();
+        if (!$get_application)
+            return response()->json([
+                'success' => false,
+                'data' => "The application cannot be found !"
+            ]);
+
+        $file_name = $request->input('file_name');
+
+        $file = $request->file('file');
+        $content = $request->input('content');
+
+        $file_path = null;
+        if ($file)
+            $file_path = self::saveFile($file, "/files");
+        $connected_user = Auth::user();
+
+        (new ApplicationDiscussions())->insert(['file_name' => $file_name, 'application_id' => $id, 'file_path' => $file_path, 'content' => $content, 'user_id' => $connected_user->id, 'created_at' => Carbon::now()]);
+
+        return response()->json([
+            'success' => true,
+            'data' => ["Comment added !"]
+
+        ]);
 
     }
 
@@ -172,10 +220,10 @@ class ApplicationController extends Controller
             ]);
 
         /**if ($state == $get_application->state)
-            return response()->json([
-                'success' => true,
-                'data' => ["The state is already to " . $state]
-            ]);**/
+         * return response()->json([
+         * 'success' => true,
+         * 'data' => ["The state is already to " . $state]
+         * ]);**/
         $message = "";
 
         switch ($state) {
@@ -204,7 +252,8 @@ class ApplicationController extends Controller
         ]);
     }
 
-    private function notify($type, $content, $user_id, $application_id) {
+    private function notify($type, $content, $user_id, $application_id)
+    {
 
         (new Notifications())->insert(['type' => $type, 'content' => $content, 'user_id' => $user_id, 'application_id' => $application_id, 'created_at' => Carbon::now()]);
 

@@ -92,10 +92,10 @@
                             @endif
                             @if(!empty($v->file_path))
                                 <div class="form-group">
-                                    <label>Extra File</label><br>
+                                    <label>File</label><br>
 
                                     <a class="btn btn-sm btn-secondary" target="_blank"
-                                       href="{{asset('storage/'.$v->file_path)}}"> Test</a>
+                                       href="{{asset('storage/'.$v->file_path)}}"> Click to See : {{$v->file_name}}</a>
                                 </div>
                             @endif
                         </div>
@@ -105,6 +105,44 @@
                     </div>
                 </div>
             @endforeach
+
+
+            <div class="col-md-12">
+                <div class="card card-warning">
+                    <div class="card-header with-border">
+                        <h3 class="card-title">Comment Form</h3>
+                    </div>
+                    <form action="{{ route('panel_applications_reply') }}"
+                          data-redirect-url="{{ route('panel_applications_show', [$id]) }}" data-ajax="true"
+                          method="POST"
+                          data-upload-image="true">
+                        <div class="card-body">
+                            <div class="ajax-msg"></div>
+                            <input type="hidden" name="id" value="{{$id}}">
+                            <div class="form-group">
+                                <label>Content (Optional)</label>
+                                <textarea id="editor" name="content"></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label>File (Optional)</label>
+                                <div class="custom-file">
+                                    <input type="file" name="file" class="custom-file-input" id="cover_letter">
+                                    <label class="custom-file-label" for="file">Select File</label>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label>File Name (Optional if you haven't file)</label>
+                                <input type="text" class="form-control" name="file_name">
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <button class="btn btn-primary" type="submit">Send</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
     </section>
 @endsection

@@ -9,7 +9,8 @@
                     </div>
                     <div class="card-body">
                         <form action="{{ route('panel_applications_participate', [$id]) }}"
-                              data-redirect-url="{{ route('panel_applications') }}" data-ajax="true" method="POST" data-upload-image="true">
+                              data-redirect-url="{{ route('panel_applications') }}" data-ajax="true" method="POST"
+                              data-upload-image="true">
                             <div class="ajax-msg"></div>
                             <div class="form-group">
                                 <label>Content</label>

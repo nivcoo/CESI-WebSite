@@ -70,7 +70,8 @@ Route::group(['prefix' => 'panel'], function () {
 
         Route::get('/delete/{id}', [ApplicationController::class, 'panel_applications_delete'])->name('panel_applications_delete');
 
-        Route::post('/change/step/', [ApplicationController::class, 'panel_applications_change_step'])->name('panel_applications_change_step');
+        Route::post('/change/step', [ApplicationController::class, 'panel_applications_change_step'])->name('panel_applications_change_step');
+        Route::post('/reply', [ApplicationController::class, 'panel_applications_reply'])->name('panel_applications_reply');
 
     });
 });

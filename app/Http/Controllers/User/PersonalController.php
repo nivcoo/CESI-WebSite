@@ -77,7 +77,7 @@ class PersonalController extends Controller
                     $btn = '';
                     $applications_model = new Applications();
                     $application = $applications_model->where(['user_id' => Auth::user()->id, 'internship_offer_id' => $row['id']])->first();
-                    if ($can["participate"] && !$application)
+                    if ($can["applications_participate"] && !$application)
                         $btn = '<a href="' . route("panel_applications_participate", [$row['id']]) . '" class="btn btn-warning btn-sm">Participate</a> ';
                     if ($can["wishlist_delete"])
                         $btn .= '<a onClick="confirmDel(\'' . route("panel_personal_wishlist_delete", [$row['user_id'], $row['internship_offer_id']]) . '\')" class="btn btn-danger btn-sm">Delete</button>';
@@ -149,6 +149,7 @@ class PersonalController extends Controller
 
         $can["notifications_show"] = Permission::can("PERSONAL_SHOW_NOTIFICATIONS");
         $can["applications_show"] = Permission::can("APPLICATIONS_SHOW");
+        $can["applications_participate"] = Permission::can("APPLICATIONS_PARTICIPATE");
 
         return $can;
 
