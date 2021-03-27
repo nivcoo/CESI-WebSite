@@ -113,7 +113,10 @@ class ApplicationController extends Controller
         $connected_user = Auth::user();
 
         (new ApplicationDiscussions())->insert(['file_name' => $file_name, 'application_id' => $id, 'file_path' => $file_path, 'content' => $content, 'user_id' => $connected_user->id, 'created_at' => Carbon::now()]);
-
+        if ($get_application->user_id != $connected_user->id) {
+            $message = "You have a new message by $connected_user->first_name $connected_user->last_name for your $get_application->name business application.";
+            self::notify("application", $message, $get_application->user_id, $get_application->id);
+        }
         return response()->json([
             'success' => true,
             'data' => ["Comment added !"]
