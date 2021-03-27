@@ -55,6 +55,11 @@ Route::group(['prefix' => 'panel'], function () {
             Route::get('/add/{id}', [PersonalController::class, 'panel_personal_wishlist_add'])->name('panel_personal_wishlist_add');
             Route::get('/delete/{user_id}/{internship_offer_id}', [PersonalController::class, 'panel_personal_wishlist_delete'])->name('panel_personal_wishlist_delete');
         });
+
+        Route::group(['prefix' => 'notification'], function () {
+            Route::match(["GET", "POST"], '/', [PersonalController::class, 'panel_personal_notifications'])->name('panel_personal_notifications');
+            Route::get('/see/{id}', [PersonalController::class, 'panel_personal_notifications_see'])->name('panel_personal_notifications_see');
+        });
     });
 
 
@@ -64,6 +69,8 @@ Route::group(['prefix' => 'panel'], function () {
         Route::get('/show/{id}', [ApplicationController::class, 'panel_applications_show'])->name('panel_applications_show');
 
         Route::get('/delete/{id}', [ApplicationController::class, 'panel_applications_delete'])->name('panel_applications_delete');
+
+        Route::post('/change/step/', [ApplicationController::class, 'panel_applications_change_step'])->name('panel_applications_change_step');
 
     });
 });

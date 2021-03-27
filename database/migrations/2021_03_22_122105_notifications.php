@@ -17,9 +17,9 @@ class Notifications extends Migration
             Schema::create('notifications', function (Blueprint $table) {
 
                 $table->increments('id');
-                $table->integer('type');
+                $table->string('type', 50);
                 $table->string('content', 255);
-                $table->boolean('seen');
+                $table->boolean('seen')->default('0');
                 $table->unsignedInteger('user_id');
                 $table->unsignedInteger('application_id');
                 $table->foreign('user_id')->references('id')->on('users');

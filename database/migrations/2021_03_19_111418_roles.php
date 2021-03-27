@@ -74,10 +74,13 @@ class Roles extends Migration
                     ['permission' => 'PERSONAL_DELETE_WISHLIST', "definition" => "Delete item in the Wishlist"],
 
 
-                ['permission' => 'APPLICATIONS_PARTICIPATE', "definition" => "Participate in an application"],
-                ['permission' => 'APPLICATIONS_SHOW', "definition" => "Show Applications"],
-                ['permission' => 'APPLICATIONS_DELETE', "definition" => "Delete an Application"],
-                ['permission' => 'APPLICATIONS_REPLY', "definition" => "Reply for an Application"],
+                    ['permission' => 'APPLICATIONS_PARTICIPATE', "definition" => "Participate in an application"],
+                    ['permission' => 'APPLICATIONS_SHOW', "definition" => "Show Applications"],
+                    ['permission' => 'APPLICATIONS_DELETE', "definition" => "Delete an Application"],
+                    ['permission' => 'APPLICATIONS_REPLY', "definition" => "Reply for an Application"],
+                    ['permission' => 'APPLICATIONS_CHANGE_STATE', "definition" => "Change state for an Application"],
+
+                    ['permission' => 'PERSONAL_SHOW_NOTIFICATIONS', "definition" => "Show the personal notification"],
 
                 ]
             );

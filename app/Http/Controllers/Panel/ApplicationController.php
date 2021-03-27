@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Applications;
 use App\Models\InternshipOffers;
 use App\Models\Wishlists;
+use App\Models\Notifications;
 use Carbon\Carbon;
 use DataTables;
 use Illuminate\Http\Request;
@@ -149,6 +150,50 @@ class ApplicationController extends Controller
 
     }
 
+    public function panel_applications_change_step(Request $request)
+    {
+        $can = self::has_permission();
+        if (!$can['change_state'])
+            return abort("403");
+
+        $applications_model = new Applications();
+        $id = $request->input("id");
+        $state = $request->input("state");
+        $get_application = $applications_model->where('id', $id)->first();
+        if (!$get_application)
+            return response()->json([
+                'success' => false,
+                'data' => ["The application cannot be found"]
+            ]);
+
+        /**if ($state == $get_application->state)
+            return response()->json([
+                'success' => true,
+                'data' => ["The state is already to " . $state]
+            ]);**/
+
+        switch ($state) {
+            case 1:
+                self::notify("application", "You are now at step 1 on your $get_application->name business application. You can chat with the company !", $get_application->user_id, $get_application->id);
+                break;
+            case 2:
+                break;
+            case 3:
+                break;
+        }
+        $get_application->update(['state' => $state]);
+        return response()->json([
+            'success' => true,
+            'data' => ["The state is changed to " . $state]
+        ]);
+    }
+
+    private function notify($type, $content, $user_id, $application_id) {
+
+        (new Notifications())->insert(['type' => $type, 'content' => $content, 'user_id' => $user_id, 'application_id' => $application_id, 'created_at' => Carbon::now()]);
+
+    }
+
 
     private function has_permission()
     {
@@ -156,6 +201,7 @@ class ApplicationController extends Controller
         $can["show"] = Permission::can("APPLICATIONS_SHOW");
         $can["delete"] = Permission::can("APPLICATIONS_DELETE");
         $can["reply"] = Permission::can("APPLICATIONS_REPLY");
+        $can["change_state"] = Permission::can("APPLICATIONS_CHANGE_STATE");
         return $can;
 
     }

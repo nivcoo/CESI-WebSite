@@ -17,10 +17,10 @@ class Applications extends Migration
             Schema::create('applications', function (Blueprint $table) {
 
                 $table->increments('id');
-                $table->integer('state');
+                $table->integer('state')->default('1');;
                 $table->string('cv_path');
                 $table->string('cover_letter_path');
-                $table->boolean('closed');
+                $table->boolean('closed')->default('0');;
                 $table->unsignedInteger('internship_offer_id');
                 $table->unsignedInteger('user_id');
                 $table->foreign('internship_offer_id')->references('id')->on('internship_offers');

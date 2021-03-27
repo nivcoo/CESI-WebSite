@@ -18,15 +18,10 @@
                             <table class="table table-responsive-sm table-bordered datatable">
                                 <thead>
                                 <tr>
-                                    <th>No
-                                        @if($can["wishlist_delete"])
-                                            <a class="btn btn-sm btn-success d-inline"
-                                               href="{{ route("panel_offers") }}">Add</a>
-                                        @endif</th>
+                                    <th>No</th>
+                                    <th>Type</th>
                                     <th>Society Name</th>
                                     <th>Content</th>
-                                    <th>Offer Start</th>
-                                    <th>Offer End</th>
                                     <th>Actions</th>
                                 </tr>
                                 </thead>
@@ -55,10 +50,9 @@
 
                 columns: [
                     {data: 'DT_RowIndex', name: 'DT_RowIndex'},
+                    {data: 'type', name: 'type'},
                     {data: 'name', name: 'name'},
                     {data: 'content', name: 'content'},
-                    {data: 'offer_start', name: 'offer_start'},
-                    {data: 'offer_end', name: 'offer_end'},
                     {data: 'action', name: 'action', orderable: true, searchable: true},
                 ]
             });

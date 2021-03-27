@@ -5,6 +5,7 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 use App\Models\Applications;
 use App\Models\InternshipOffers;
+use App\Models\Notifications;
 use App\Models\Wishlists;
 use App\User;
 use Carbon\Carbon;
@@ -17,6 +18,47 @@ use Permission;
 
 class PersonalController extends Controller
 {
+
+    public function panel_personal_notifications(Request $request)
+    {
+        $title = 'Notifications';
+        $can = self::has_permission();
+        if (!$can['notifications_show'])
+            return abort("403");
+
+        $connected_user = Auth::user();
+        $notifications_model = new Notifications();
+        $get_notifications = $notifications_model->join('applications', 'applications.id', '=', 'notifications.application_id')->join('internship_offers', 'internship_offers.id', '=', 'applications.internship_offer_id')->join('societies', 'societies.id', '=', 'internship_offers.society_id')->select(["notifications.*", "societies.name"])->where("notifications.user_id", $connected_user->id)->where("notifications.seen", false)->get();
+
+        if ($request->ajax()) {
+            return Datatables::of($get_notifications)
+                ->addIndexColumn()
+                ->addColumn('action', function ($row) use ($can) {
+                    $btn = '';
+                    $btn .= '<a href="' . route("panel_personal_notifications_see", [$row['id']]) . '" class="btn btn-warning btn-sm">Seen</a> ';
+                    if ($can['applications_show'])
+                        $btn .= '<a href="' . route("panel_applications_show", [$row['application_id']]) . '" class="btn btn-info btn-sm">Show Application</a> ';
+                    return $btn;
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+        }
+
+        return view('panel.personal.notifications_panel')->with(compact('title', 'can'));
+    }
+
+    public function panel_personal_notifications_see($id)
+    {
+
+        $notifications_model = new Notifications();
+        $get_notification = $notifications_model->where('id', $id)->first();
+        if (!$get_notification)
+            return abort("404");
+        $get_notification->update(['seen' => 1]);
+
+        return redirect(route("panel_personal_notifications"))->with('message', 'The notification has been seen !');
+
+    }
 
     public function panel_personal_wishlist(Request $request)
     {
@@ -104,6 +146,9 @@ class PersonalController extends Controller
         $can["wishlist_show"] = Permission::can("PERSONAL_SHOW_WISHLIST");
         $can["wishlist_add"] = Permission::can("PERSONAL_ADD_WISHLIST");
         $can["wishlist_delete"] = Permission::can("PERSONAL_DELETE_WISHLIST");
+
+        $can["notifications_show"] = Permission::can("PERSONAL_SHOW_NOTIFICATIONS");
+        $can["applications_show"] = Permission::can("APPLICATIONS_SHOW");
 
         return $can;
 
