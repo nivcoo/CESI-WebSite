@@ -16,10 +16,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-
                             <label>State : </label> {!! $get_application->state !!}
-
-
                         </div>
                         @if($can['change_state'])
                             <form action="{{ route('panel_applications_change_step') }}"
@@ -71,12 +68,8 @@
                     </div>
                 </div>
             </div>
-
             <hr>
-
             @foreach($get_discussions as $v)
-
-
                 <div class="col-md-8 @if($connected_user->id != $v->user_id) offset-md-4 @endif">
                     <div class="card @if($connected_user->id == $v->user_id) card-info @else card-danger @endif">
                         <div class="card-header with-border">
@@ -106,8 +99,6 @@
                     </div>
                 </div>
             @endforeach
-
-
             <div class="col-md-12">
                 <div class="card card-warning">
                     <div class="card-header with-border">

@@ -43,6 +43,7 @@ function initForms() {
             });
 
             var inputs = {};
+            var formData = new FormData(form[0]);
 
             var i = 0;
             for (var key in args = array) {
@@ -72,6 +73,8 @@ function initForms() {
                     inputs[input_name] = form.find('select[name="' + input_name + '"]').val();
                 }
 
+                formData.append(input_name, inputs[input_name]);
+
                 i++;
             }
 
@@ -83,14 +86,14 @@ function initForms() {
                 var recaptcha = false;
             }
 
-
             //
 
             if (form.attr('data-upload-image') == "true") {
                 var contentType = false;
                 var processData = false;
-                inputs = (window.FormData) ? new FormData(form[0]) : null;
+                inputs = (window.FormData) ? formData : null;
             }
+
 
         } else {
             inputs = window[form.attr('data-custom-function')](form);
