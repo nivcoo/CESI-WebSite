@@ -3,9 +3,12 @@
 namespace App\Http\Controllers\Panel;
 
 use App\Http\Controllers\Controller;
+use App\Models\InternshipOffers;
 use App\Models\Permissions;
 use App\Models\PermissionsRoles;
 use App\Models\Roles;
+use App\Models\Societies;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
@@ -17,12 +20,28 @@ class PanelController extends Controller
 {
     public function index()
     {
-
-        if (!Permission::can("ACCESS_PANEL"))
+        $can = self::has_permission();
+        if (!$can['access'])
             redirect()->route("login")->send();
-
         $title = 'Panel';
-        return view('panel.index')->with(compact("title"));
+        $statistics = [];
+        $users_model = new User();
+        $societies_model = new Societies();
+        $internship_offers_model = new InternshipOffers();
+        $statistics['students_number'] = $users_model->where('role_id', 1)->count();
+        $statistics['societies_number'] = $societies_model->count();
+        $statistics['internship_offers_number'] = $internship_offers_model->count();
+        return view('panel.index')->with(compact('title', 'can', 'statistics'));
+
+    }
+
+    private function has_permission()
+    {
+        $can["access"] = Permission::can("ACCESS_PANEL");
+        $can["statistics_students"] = Permission::can("SOCIETIES_ADD_SOCIETIES");
+        $can["statistics_societies"] = Permission::can("STATISTIC_SOCIETIES");
+        $can["statistics_internship_offers"] = Permission::can("STATISTIC_INTERNSHIP_OFFERS");
+        return $can;
 
     }
 
@@ -60,7 +79,7 @@ class PanelController extends Controller
             }
             $connected_user = Auth::user();
             foreach ($roles as $roleID => $permissions) {
-                if($connected_user->role_id < $roleID)
+                if ($connected_user->role_id < $roleID)
                     continue;
                 foreach ($permissions as $permissionID => $checked) {
                     if ($checked) {
@@ -71,10 +90,10 @@ class PanelController extends Controller
 
                 }
             }
-            return response()->json(array(
+            return response()->json([
                 'success' => true,
                 'data' => ["Permission Edited !"]
-            ));
+            ]);
 
         }
 
