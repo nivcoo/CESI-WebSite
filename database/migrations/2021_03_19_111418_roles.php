@@ -82,6 +82,11 @@ class Roles extends Migration
 
                     ['permission' => 'PERSONAL_SHOW_NOTIFICATIONS', "definition" => "Show personal Notifications"],
 
+
+                    ['permission' => 'STATISTIC_STUDENTS', "definition" => "Show Students Statistics"],
+                    ['permission' => 'STATISTIC_SOCIETIES', "definition" => "Show Societies Statistics"],
+                    ['permission' => 'STATISTIC_INTERNSHIP_OFFERS', "definition" => "Show Internship Offer Statistics"],
+
                 ]
             );
         }
