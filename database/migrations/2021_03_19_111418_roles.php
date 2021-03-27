@@ -80,7 +80,7 @@ class Roles extends Migration
                     ['permission' => 'APPLICATIONS_REPLY', "definition" => "Reply for an Application"],
                     ['permission' => 'APPLICATIONS_CHANGE_STATE', "definition" => "Change state for an Application"],
 
-                    ['permission' => 'PERSONAL_SHOW_NOTIFICATIONS', "definition" => "Show personal notifications"],
+                    ['permission' => 'PERSONAL_SHOW_NOTIFICATIONS', "definition" => "Show personal Notifications"],
 
                 ]
             );
