@@ -2,6 +2,16 @@ const cacheName = "cache-v1";
 const assets = [
   "/",
   "/panel",
+  "/panel/users/student",
+  "/panel/users/delegate",
+  "/panel/users/pilote",
+  "/panel/users/admin",
+  "/panel/societies",
+  "/panel/offers",
+  "/panel/applications",
+  "/panel/personal/wishlist",
+  "/panel/personal/notification",
+  "/panel/permissions",
 ];
 
 // mettre en cache
