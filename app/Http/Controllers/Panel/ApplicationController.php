@@ -195,6 +195,10 @@ class ApplicationController extends Controller
         if (!$can['delete'])
             return abort("403");
         $applications_model = new Applications();
+        $applications_discussions_model = new ApplicationDiscussions();
+        $notifications_model = new Notifications();
+        $notifications_model->where("application_id", $id)->delete();
+        $applications_discussions_model->where("application_id", $id)->delete();
         $applications_model->where('id', $id)->delete(); // I don't use update(['closed' => true])
         return redirect(route("panel_applications"))->with('message', 'Application deleted with Success !');
     }

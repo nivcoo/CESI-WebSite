@@ -21,8 +21,8 @@ class ApplicationDiscussions extends Migration
                 $table->string('file_name')->nullable();
                 $table->string('file_path')->nullable();
                 $table->string('content')->nullable();
-                $table->foreign('application_id')->references('id')->on('applications');
-                $table->foreign('user_id')->references('id')->on('users');
+                $table->foreign('application_id')->references('id')->on('applications')->onDelete('cascade');
+                $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');;
                 $table->engine = 'InnoDB';
                 $table->timestamps();
             });
