@@ -140,7 +140,7 @@ class ApplicationController extends Controller
 
         $connected_user = Auth::user();
         $application_discussions_model = new ApplicationDiscussions();
-        $get_discussions = $application_discussions_model->join('users', 'users.id', '=', 'application_discussions.application_id')->where("application_id", $get_application->id)->select('application_discussions.*', 'users.first_name', 'users.last_name')->get();
+        $get_discussions = $application_discussions_model->join('users', 'users.id', '=', 'application_discussions.user_id')->where("application_id", $get_application->id)->select('application_discussions.*', 'users.first_name', 'users.last_name')->get();
         return view('panel.applications.application_show')->with(compact('title', 'get_application', 'can', 'get_discussions', 'connected_user', 'id'));
 
 
