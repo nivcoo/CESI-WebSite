@@ -255,15 +255,6 @@
 
 
 <script>
-    if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('{{ asset('sw.js') }}', { scope: '/' }).then(function(reg) {
-            // registration worked
-            console.log('Registration succeeded. Scope is ' + reg.scope);
-        }).catch(function(error) {
-            // registration failed
-            console.log('Registration failed with ' + error);
-        });
-    };
     function confirmDel(url) {
         if (confirm("Are you sure to delete that ?"))
             window.location.href = '' + url + '';
