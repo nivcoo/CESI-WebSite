@@ -1,6 +1,7 @@
 const cacheName = "cache-v1";
 const assets = [
   "/",
+  " ",
   "/panel",
   "/panel/users/student",
   "/panel/users/delegate",
