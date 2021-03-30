@@ -1,5 +1,6 @@
 const cacheName = "cache-v1";
 const assets = [
+  "/",
   "/panel",
   "/panel/users/student",
   "/panel/users/delegate",
@@ -23,13 +24,13 @@ self.addEventListener("install", (e) => {
 });
 
 // fetcher le cache
-self.addEventListener("fetch", (e) => {
-  // console.log(e.request);
+/**self.addEventListener("fetch", (e) => {
+  console.log(e.request);
   e.respondWith(
     caches.match(e.request).then((cache) => {
       return cache || fetch(e.request);
     })
   );
-});
+});**/
 
 importScripts('sw-toolbox.js');

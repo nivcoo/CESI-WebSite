@@ -28,17 +28,13 @@
 <script src="{{ asset('js/jquery/jquery-3.6.0.min.js') }}"></script>
 <script src="{{ asset('js/jquery/jquery-ui.min.js') }}"></script>
 
-<script src="{{ asset('js/jquery/jquery.dataTables.min.js') }}"></script>
-<script src="{{ asset('js/bootstrap/dataTables.bootstrap4.min.js') }}"></script>
 <script src="{{ asset('js/admin/sparkline.js') }}"></script>
 <script src="{{ asset('js/jquery/jquery.knob.min.js') }}"></script>
 <script src="{{ asset('js/moment/moment.min.js') }}"></script>
-<script src="{{ asset('js/bootstrap/tempusdominus-bootstrap-4.min.js') }}"></script>
-<script src="{{ asset('js/daterangepicker/daterangepicker.js') }}"></script>
 <script src="{{ asset('js/jquery/jquery.overlayScrollbars.min.js') }}"></script>
 
 
-<script src="{{ asset('js/bootstrap/bootstrap.bundle.min.js') }}"></script>
+<script src="{{ asset('js/boostrap/bootstrap.bundle.min.js') }}"></script>
 <script src="{{ asset('js/admin/adminlte.min.js') }}"></script>
 
 
