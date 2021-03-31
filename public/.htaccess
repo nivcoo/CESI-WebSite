@@ -1,4 +1,10 @@
 <IfModule mod_rewrite.c>
+
+    # disabled by cloudflare
+    #Order Deny,Allow
+    #Deny from all
+    #Allow from 176.164.6.251
+
     <IfModule mod_negotiation.c>
         Options -MultiViews -Indexes
     </IfModule>
